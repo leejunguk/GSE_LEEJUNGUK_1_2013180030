@@ -13,17 +13,26 @@ but WITHOUT ANY WARRANTY.
 #include "Dependencies\glew.h"
 #include "Dependencies\freeglut.h"
 
+//오브젝트 추가 코드
+#include "Object.h"
+//
+
 #include "Renderer.h"
 
 Renderer *g_Renderer = NULL;
+Object *g_Object = NULL;
 
 void RenderScene(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
 
+	
 	// Renderer Test
-	//g_Renderer->DrawSolidRect(0, 0, 0, 4, 1, 0, 1, 1);
+	
+
+	g_Renderer->DrawSolidRect(g_Object->GetPositionX(), g_Object->GetPositionY(), g_Object->GetPositionZ(), g_Object->GetSize(), 
+		                      g_Object->GetR(), g_Object->GetG(), g_Object->GetB(), g_Object->GetA());
 
 	glutSwapBuffers();
 }
@@ -73,6 +82,12 @@ int main(int argc, char **argv)
 	{
 		std::cout << "Renderer could not be initialized.. \n";
 	}
+	g_Object = new Object;
+	g_Object->SetPostionXYZ(10, 10, 10);
+	g_Object->SetRGBA(1, 1, 0, 1);
+	g_Object->SetSize(100);
+
+	//초기화
 
 	glutDisplayFunc(RenderScene);
 	glutIdleFunc(Idle);
