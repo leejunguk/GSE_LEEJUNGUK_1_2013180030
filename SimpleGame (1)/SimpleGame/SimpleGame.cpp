@@ -25,6 +25,7 @@ Object *mousobj = NULL;
 Object *objectlist[1000];
 static float frame;
 static int objnum = 0;
+bool g_LButtonDown;
 
 void RenderScene(void)
 {
@@ -56,10 +57,19 @@ void Idle(void)
 void MouseInput(int button, int state, int x, int y)
 {
 	RenderScene();
-	Object* mousobj = new Object(x-250, -y+ 250,0);
-	mousobj->SetSize(5.f);
-	mousobj->SetRGBA(1, 1, 1, 1);
-	objectlist[objnum++] = mousobj;
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+	{
+		g_LButtonDown = true;
+	}
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_UP && g_LButtonDown == true)
+	{
+		Object* mousobj = new Object(x - 250, -y + 250, 0);
+		mousobj->SetSize(5.f);
+		mousobj->SetRGBA(1, 1, 1, 1);
+		objectlist[objnum++] = mousobj;
+		g_LButtonDown = false;
+	}
+	
 }
 
 void KeyInput(unsigned char key, int x, int y)

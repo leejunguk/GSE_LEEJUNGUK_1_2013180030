@@ -27,6 +27,8 @@ private:
 	float m_g;
 	float m_b;
 	float m_a;
+	float m_Vx;
+	float m_Vy;
 	char*  m_name;
 };
 
