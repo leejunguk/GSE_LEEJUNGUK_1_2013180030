@@ -3,6 +3,7 @@ class Object
 {
 public:
 	Object();
+	Object(float x, float y,float z);
 	~Object();
 public:
 	inline void SetPostionXYZ(float x, float y, float z) { m_x = x, m_y = y, m_z = z; }

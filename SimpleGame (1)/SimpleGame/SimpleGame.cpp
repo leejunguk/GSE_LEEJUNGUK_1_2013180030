@@ -21,7 +21,10 @@ but WITHOUT ANY WARRANTY.
 
 Renderer *g_Renderer = NULL;
 Object *g_Object = NULL;
+Object *mousobj = NULL;
+Object *objectlist[1000];
 static float frame;
+static int objnum = 0;
 
 void RenderScene(void)
 {
@@ -31,9 +34,16 @@ void RenderScene(void)
 	
 	// Renderer Test
 	
-	g_Object->PositionUpdate(0.01f, 0.01f, frame++);
+	g_Object->PositionUpdate(2.1f, 5.1f, frame);
 	g_Renderer->DrawSolidRect(g_Object->GetPositionX(), g_Object->GetPositionY(), g_Object->GetPositionZ(), g_Object->GetSize(), 
 		                      g_Object->GetR(), g_Object->GetG(), g_Object->GetB(), g_Object->GetA());
+	for (int i = 0; i < objnum; ++i)
+	{
+		objectlist[i]->PositionUpdate(5.1f, 0.f, frame);
+		g_Renderer->DrawSolidRect(objectlist[i]->GetPositionX(), objectlist[i]->GetPositionY(), objectlist[i]->GetPositionZ()
+		, objectlist[i]->GetSize(),objectlist[i]->GetR(), objectlist[i]->GetG(), objectlist[i]->GetB(), objectlist[i]->GetA());
+		
+	}
 
 	glutSwapBuffers();
 }
@@ -46,6 +56,10 @@ void Idle(void)
 void MouseInput(int button, int state, int x, int y)
 {
 	RenderScene();
+	Object* mousobj = new Object(x-250, -y+ 250,0);
+	mousobj->SetSize(5.f);
+	mousobj->SetRGBA(1, 1, 1, 1);
+	objectlist[objnum++] = mousobj;
 }
 
 void KeyInput(unsigned char key, int x, int y)
@@ -66,7 +80,7 @@ int main(int argc, char **argv)
 	glutInitWindowPosition(0, 0);
 	glutInitWindowSize(500, 500);
 	glutCreateWindow("Game Software Engineering KPU");
-
+	
 	glewInit();
 	if (glewIsSupported("GL_VERSION_3_0"))
 	{
@@ -84,7 +98,7 @@ int main(int argc, char **argv)
 		std::cout << "Renderer could not be initialized.. \n";
 	}
 
-	frame = 0;
+	frame = 1;
 
 	g_Object = new Object;
 	g_Object->SetPostionXYZ(10, 10, 10);

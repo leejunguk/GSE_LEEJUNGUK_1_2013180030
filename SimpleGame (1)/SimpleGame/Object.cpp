@@ -6,6 +6,10 @@ Object::Object()
 {
 }
 
+Object::Object(float x, float y,float z)
+{
+	m_x = x, m_y = y;
+}
 
 Object::~Object()
 {
