@@ -21,6 +21,7 @@ but WITHOUT ANY WARRANTY.
 
 Renderer *g_Renderer = NULL;
 Object *g_Object = NULL;
+static float frame;
 
 void RenderScene(void)
 {
@@ -30,7 +31,7 @@ void RenderScene(void)
 	
 	// Renderer Test
 	
-
+	g_Object->PositionUpdate(0.01f, 0.01f, frame++);
 	g_Renderer->DrawSolidRect(g_Object->GetPositionX(), g_Object->GetPositionY(), g_Object->GetPositionZ(), g_Object->GetSize(), 
 		                      g_Object->GetR(), g_Object->GetG(), g_Object->GetB(), g_Object->GetA());
 
@@ -82,10 +83,14 @@ int main(int argc, char **argv)
 	{
 		std::cout << "Renderer could not be initialized.. \n";
 	}
+
+	frame = 0;
+
 	g_Object = new Object;
 	g_Object->SetPostionXYZ(10, 10, 10);
 	g_Object->SetRGBA(1, 1, 0, 1);
 	g_Object->SetSize(100);
+	
 
 	//√ ±‚»≠
 
@@ -94,6 +99,7 @@ int main(int argc, char **argv)
 	glutKeyboardFunc(KeyInput);
 	glutMouseFunc(MouseInput);
 	glutSpecialFunc(SpecialKeyInput);
+	
 
 	glutMainLoop();
 

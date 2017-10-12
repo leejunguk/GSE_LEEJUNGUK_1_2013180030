@@ -16,6 +16,7 @@ public:
 	inline float GetB(void) { return m_b; }
 	inline float GetA(void) { return m_a; }
 	inline float GetSize(void) { return m_size; };
+	void PositionUpdate(float xvector, float yvector,float time);
 private:
 	float m_x;
 	float m_y;
