@@ -20,7 +20,7 @@ void Object::PositionUpdate(float xvector, float yvector, float time)
 {
 	m_x = m_x + m_Vx *(xvector * time);
 	m_y = m_y + m_Vy *(yvector * time);
-	m_size = 100 * sin(m_x);
+	m_size = 10 * sin(m_x);
 	if ( m_x > 250)
 	{
 		m_Vx = - m_Vx;
@@ -29,5 +29,12 @@ void Object::PositionUpdate(float xvector, float yvector, float time)
 	{
 		m_Vx = -m_Vx;
 	}
-
+	if (m_y > 250)
+	{
+		m_Vy = -m_Vy;
+	}
+	if (m_y < -250)
+	{
+		m_Vy = -m_Vy;
+	}
 }

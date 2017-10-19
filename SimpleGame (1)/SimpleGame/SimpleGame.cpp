@@ -15,14 +15,18 @@ but WITHOUT ANY WARRANTY.
 
 //오브젝트 추가 코드
 #include "Object.h"
+#include "SceneMgr.h"
 //
 
 #include "Renderer.h"
 
 Renderer *g_Renderer = NULL;
 Object *g_Object = NULL;
-Object *mousobj = NULL;
-Object *objectlist[1000];
+//Object *mousobj = NULL;
+
+SceneMgr* g_ScenMgr;
+
+//Object *objectlist[1000];
 static float frame;
 static int objnum = 0;
 bool g_LButtonDown;
@@ -35,14 +39,18 @@ void RenderScene(void)
 	
 	// Renderer Test
 	
-	g_Object->PositionUpdate(2.1f, 5.1f, frame);
+	/*g_Object->PositionUpdate(2.1f, 5.1f, frame);
 	g_Renderer->DrawSolidRect(g_Object->GetPositionX(), g_Object->GetPositionY(), g_Object->GetPositionZ(), g_Object->GetSize(), 
-		                      g_Object->GetR(), g_Object->GetG(), g_Object->GetB(), g_Object->GetA());
-	for (int i = 0; i < objnum; ++i)
+		                      g_Object->GetR(), g_Object->GetG(), g_Object->GetB(), g_Object->GetA());*/
+	
+	//g_ScenMgr->Update(5.1f, 5.1f, frame);
+
+	for (int i = 0; i < g_ScenMgr->m_objcctCnt; ++i)
 	{
-		objectlist[i]->PositionUpdate(5.1f, 0.f, frame);
-		g_Renderer->DrawSolidRect(objectlist[i]->GetPositionX(), objectlist[i]->GetPositionY(), objectlist[i]->GetPositionZ()
-		, objectlist[i]->GetSize(),objectlist[i]->GetR(), objectlist[i]->GetG(), objectlist[i]->GetB(), objectlist[i]->GetA());
+		g_ScenMgr->m_objectList[i]->PositionUpdate(5.1f, 5.1f, frame);
+
+		g_Renderer->DrawSolidRect(g_ScenMgr->m_objectList[i]->GetPositionX(), g_ScenMgr->m_objectList[i]->GetPositionY(), g_ScenMgr->m_objectList[i]->GetPositionZ()
+		, g_ScenMgr->m_objectList[i]->GetSize(), g_ScenMgr->m_objectList[i]->GetR(), g_ScenMgr->m_objectList[i]->GetG(), g_ScenMgr->m_objectList[i]->GetB(), g_ScenMgr->m_objectList[i]->GetA());
 		
 	}
 
@@ -66,7 +74,7 @@ void MouseInput(int button, int state, int x, int y)
 		Object* mousobj = new Object(x - 250, -y + 250, 0);
 		mousobj->SetSize(5.f);
 		mousobj->SetRGBA(1, 1, 1, 1);
-		objectlist[objnum++] = mousobj;
+		g_ScenMgr->m_objectList[g_ScenMgr->m_objcctCnt++] = mousobj; //\dhfb
 		g_LButtonDown = false;
 	}
 	
@@ -110,11 +118,13 @@ int main(int argc, char **argv)
 
 	frame = 1;
 
-	g_Object = new Object;
-	g_Object->SetPostionXYZ(10, 10, 10);
-	g_Object->SetRGBA(1, 1, 0, 1);
-	g_Object->SetSize(100);
+	//g_Object = new Object;
+	//g_Object->SetPostionXYZ(10, 10, 10);
+	//g_Object->SetRGBA(1, 1, 0, 1);
+	//g_Object->SetSize(100);
 	
+	g_ScenMgr = new SceneMgr;
+
 
 	//초기화
 
