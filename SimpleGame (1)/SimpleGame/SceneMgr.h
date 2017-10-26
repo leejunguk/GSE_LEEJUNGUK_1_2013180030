@@ -1,5 +1,6 @@
 #pragma once
 #include "Object.h"
+#include "Renderer.h"
 class SceneMgr
 {
 public:
@@ -8,8 +9,10 @@ public:
 public:
 	Object* m_objectList[MAX_OBJECTS_COUNT];
 	int		m_objcctCnt;
+	Renderer *g_Renderer;
 public:
 	void Update(float xvector, float yvector, float time);
-	void CollisionCheck();
+	void Render(int index);
+	bool CollisionCheck(Object &a, Object &b );
 };
 

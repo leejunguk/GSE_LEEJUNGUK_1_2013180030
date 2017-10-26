@@ -17,7 +17,7 @@ public:
 	inline float GetB(void) { return m_b; }
 	inline float GetA(void) { return m_a; }
 	inline float GetSize(void) { return m_size; };
-	void PositionUpdate(float xvector, float yvector,float time);
+	void PositionUpdate(float xvector, float yvector, DWORD time);
 private:
 	float m_x;
 	float m_y;
@@ -30,5 +30,6 @@ private:
 	float m_Vx;
 	float m_Vy;
 	char*  m_name;
+	float m_Life;
 };
 

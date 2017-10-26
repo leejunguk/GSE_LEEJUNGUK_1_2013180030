@@ -4,6 +4,7 @@
 
 Object::Object()
 {
+	m_Life = 100;
 }
 
 Object::Object(float x, float y,float z)
@@ -15,11 +16,15 @@ Object::Object(float x, float y,float z)
 
 Object::~Object()
 {
+	//if (m_Life < 0)
+	//	delete this;
 }
-void Object::PositionUpdate(float xvector, float yvector, float time)
+void Object::PositionUpdate(float xvector, float yvector, DWORD time)
 {
-	m_x = m_x + m_Vx *(xvector * time);
-	m_y = m_y + m_Vy *(yvector * time);
+	float elapsetime = (float)time * 0.001f;
+
+	m_x = m_x + m_Vx *(xvector * elapsetime);
+	m_y = m_y + m_Vy *(yvector * elapsetime);
 	m_size = 10 * sin(m_x);
 	if ( m_x > 250)
 	{

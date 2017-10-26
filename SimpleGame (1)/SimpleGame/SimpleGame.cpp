@@ -24,7 +24,9 @@ Renderer *g_Renderer = NULL;
 Object *g_Object = NULL;
 //Object *mousobj = NULL;
 
-SceneMgr* g_ScenMgr;
+SceneMgr* g_ScenMgr= NULL;
+
+DWORD g_prevTime = NULL;
 
 //Object *objectlist[1000];
 static float frame;
@@ -36,6 +38,17 @@ void RenderScene(void)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
 
+
+	/////
+	DWORD currentTime = timeGetTime();
+	DWORD ElaspeTime = currentTime - g_prevTime;
+	g_prevTime = currentTime;
+	
+	//elsapse time curr time - gprevtime
+	//updateall object
+	//drawallobejct()
+
+	////
 	
 	// Renderer Test
 	
@@ -47,7 +60,8 @@ void RenderScene(void)
 
 	for (int i = 0; i < g_ScenMgr->m_objcctCnt; ++i)
 	{
-		g_ScenMgr->m_objectList[i]->PositionUpdate(5.1f, 5.1f, frame);
+		g_ScenMgr->m_objectList[i]->PositionUpdate(100.1f, 100.1f, ElaspeTime);
+		//g_ScenMgr->Render(i);
 
 		g_Renderer->DrawSolidRect(g_ScenMgr->m_objectList[i]->GetPositionX(), g_ScenMgr->m_objectList[i]->GetPositionY(), g_ScenMgr->m_objectList[i]->GetPositionZ()
 		, g_ScenMgr->m_objectList[i]->GetSize(), g_ScenMgr->m_objectList[i]->GetR(), g_ScenMgr->m_objectList[i]->GetG(), g_ScenMgr->m_objectList[i]->GetB(), g_ScenMgr->m_objectList[i]->GetA());
@@ -118,10 +132,6 @@ int main(int argc, char **argv)
 
 	frame = 1;
 
-	//g_Object = new Object;
-	//g_Object->SetPostionXYZ(10, 10, 10);
-	//g_Object->SetRGBA(1, 1, 0, 1);
-	//g_Object->SetSize(100);
 	
 	g_ScenMgr = new SceneMgr;
 
@@ -134,6 +144,8 @@ int main(int argc, char **argv)
 	glutMouseFunc(MouseInput);
 	glutSpecialFunc(SpecialKeyInput);
 	
+
+	g_prevTime = timeGetTime();
 
 	glutMainLoop();
 
