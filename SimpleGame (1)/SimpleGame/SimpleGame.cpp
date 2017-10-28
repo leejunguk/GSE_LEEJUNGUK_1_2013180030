@@ -20,11 +20,11 @@ but WITHOUT ANY WARRANTY.
 
 #include "Renderer.h"
 
-Renderer *g_Renderer = NULL;
+Renderer *g_Renderer;
 Object *g_Object = NULL;
 //Object *mousobj = NULL;
 
-SceneMgr* g_ScenMgr= NULL;
+SceneMgr* g_ScenMgr = NULL;
 
 DWORD g_prevTime = NULL;
 
@@ -56,17 +56,18 @@ void RenderScene(void)
 	g_Renderer->DrawSolidRect(g_Object->GetPositionX(), g_Object->GetPositionY(), g_Object->GetPositionZ(), g_Object->GetSize(), 
 		                      g_Object->GetR(), g_Object->GetG(), g_Object->GetB(), g_Object->GetA());*/
 	
-	//g_ScenMgr->Update(5.1f, 5.1f, frame);
+	
 
-	for (int i = 0; i < g_ScenMgr->m_objcctCnt; ++i)
-	{
-		g_ScenMgr->m_objectList[i]->PositionUpdate(100.1f, 100.1f, ElaspeTime);
-		//g_ScenMgr->Render(i);
-
-		g_Renderer->DrawSolidRect(g_ScenMgr->m_objectList[i]->GetPositionX(), g_ScenMgr->m_objectList[i]->GetPositionY(), g_ScenMgr->m_objectList[i]->GetPositionZ()
-		, g_ScenMgr->m_objectList[i]->GetSize(), g_ScenMgr->m_objectList[i]->GetR(), g_ScenMgr->m_objectList[i]->GetG(), g_ScenMgr->m_objectList[i]->GetB(), g_ScenMgr->m_objectList[i]->GetA());
-		
-	}
+	//for (int i = 0; i < g_ScenMgr->GetObjCnt(); ++i)
+	//{
+	//	/*g_ScenMgr->m_objectList[i]->PositionUpdate(100.1f, 100.1f, ElaspeTime);*/
+	//	
+	//	g_Renderer->DrawSolidRect(g_ScenMgr->m_objectList[i]->GetPositionX(), g_ScenMgr->m_objectList[i]->GetPositionY(), g_ScenMgr->m_objectList[i]->GetPositionZ()
+	//	, g_ScenMgr->m_objectList[i]->GetSize(), g_ScenMgr->m_objectList[i]->GetR(), g_ScenMgr->m_objectList[i]->GetG(), g_ScenMgr->m_objectList[i]->GetB(), g_ScenMgr->m_objectList[i]->GetA());
+	//	
+	//}
+	g_ScenMgr->Update(5.1f, 5.1f, ElaspeTime);
+	g_ScenMgr->Render();
 
 	glutSwapBuffers();
 }
@@ -88,7 +89,8 @@ void MouseInput(int button, int state, int x, int y)
 		Object* mousobj = new Object(x - 250, -y + 250, 0);
 		mousobj->SetSize(5.f);
 		mousobj->SetRGBA(1, 1, 1, 1);
-		g_ScenMgr->m_objectList[g_ScenMgr->m_objcctCnt++] = mousobj; //\dhfb
+		g_ScenMgr->m_objectList[g_ScenMgr->GetObjCnt()] = mousobj; //\dhfb
+		g_ScenMgr->SetObjCnt(g_ScenMgr->GetObjCnt() + 1);
 		g_LButtonDown = false;
 	}
 	
@@ -123,17 +125,18 @@ int main(int argc, char **argv)
 		std::cout << "GLEW 3.0 not supported\n ";
 	}
 
+	g_ScenMgr = new SceneMgr;
 	// Initialize Renderer
-	g_Renderer = new Renderer(500, 500);
+	/*g_Renderer = new Renderer(500, 500);
 	if (!g_Renderer->IsInitialized())
 	{
 		std::cout << "Renderer could not be initialized.. \n";
-	}
+	}*/
 
 	frame = 1;
 
 	
-	g_ScenMgr = new SceneMgr;
+	
 
 
 	//ÃÊ±âÈ­

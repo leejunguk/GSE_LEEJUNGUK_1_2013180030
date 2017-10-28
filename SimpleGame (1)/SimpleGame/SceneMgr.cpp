@@ -2,30 +2,31 @@
 #include "SceneMgr.h"
 
 
+
 SceneMgr::SceneMgr()
 {
-	m_objcctCnt = 0;
-	Renderer *g_Renderer = NULL;
-	// Initialize Renderer
-	g_Renderer = new Renderer(500, 500);
-	if (!g_Renderer->IsInitialized())
+	m_objectCnt = 0;
+	m_Renderer = new Renderer(500, 500);
+	if (!m_Renderer->IsInitialized())
 	{
 		std::cout << "Renderer could not be initialized.. \n";
 	}
+	
 }
 
 
 SceneMgr::~SceneMgr()
 {
-	delete g_Renderer;
+	delete m_Renderer;
 }
 
 
-void SceneMgr::Update(float xvector, float yvector, float time)
+void SceneMgr::Update(float xvector, float yvector, DWORD time)
 {
-	for (int i = 0; m_objcctCnt; ++i)
+	for (int i = 0; i< m_objectCnt; ++i)
 	{
 		m_objectList[i]->PositionUpdate(xvector, yvector, time);
+		//cout << "d" << endl; 
 	}
 }
 bool SceneMgr::CollisionCheck(Object &a, Object &b)
@@ -70,10 +71,13 @@ bool SceneMgr::CollisionCheck(Object &a, Object &b)
 		return true;
 	}
 }
-void SceneMgr::Render(int index)
+void SceneMgr::Render()
 {
 	
-	g_Renderer->DrawSolidRect(m_objectList[index]->GetPositionX(), m_objectList[index]->GetPositionY(), m_objectList[index]->GetPositionZ()
-			, m_objectList[index]->GetSize(), m_objectList[index]->GetR(), m_objectList[index]->GetG(), m_objectList[index]->GetB(), m_objectList[index]->GetA());
-	
+	for (int i = 0; i < m_objectCnt; ++i)
+	{
+		m_Renderer->DrawSolidRect(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(), 
+			m_objectList[i]->GetPositionZ(), m_objectList[i]->GetSize(), m_objectList[i]->GetR(),
+			m_objectList[i]->GetG(), m_objectList[i]->GetB(), m_objectList[i]->GetA());
+	}
 }

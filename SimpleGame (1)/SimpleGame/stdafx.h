@@ -3,6 +3,8 @@
 #include "targetver.h"
 
 #include <stdio.h>
+#include <iostream>
+using namespace std;
 #include <tchar.h>
 #include <math.h>
 #include <time.h>
