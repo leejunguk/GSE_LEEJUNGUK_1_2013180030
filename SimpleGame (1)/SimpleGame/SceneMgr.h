@@ -15,7 +15,11 @@ private:
 public:
 	void Update(float xvector, float yvector, DWORD time);
 	void Render();
-	bool CollisionCheck(Object &a, Object &b);
+	bool CollisionCheck(Object *a, Object *b);
+	void CollisionCheckList();
+	int	 AddObjectList(float x, float y);
+	void DeleteObject(int index);
+	void DeleteOlderObject();
 public:
 	inline void SetObjCnt(int cnt) { m_objectCnt = cnt; };
 	inline int GetObjCnt() { return m_objectCnt; };

@@ -86,10 +86,17 @@ void MouseInput(int button, int state, int x, int y)
 	}
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_UP && g_LButtonDown == true)
 	{
-		Object* mousobj = new Object(x - 250, -y + 250, 0);
-		mousobj->SetSize(5.f);
-		mousobj->SetRGBA(1, 1, 1, 1);
-		g_ScenMgr->m_objectList[g_ScenMgr->GetObjCnt()] = mousobj; //\dhfb
+		//Object* mousobj = new Object(x - 250, -y + 250, 0);
+		//mousobj->SetSize(5.f);
+		//mousobj->SetRGBA(1, 1, 1, 1);
+		if (10 <= g_ScenMgr->GetObjCnt() )
+		{
+			g_ScenMgr->SetObjCnt(g_ScenMgr->GetObjCnt() - 1);
+			g_ScenMgr->DeleteOlderObject();
+			
+		}
+
+		g_ScenMgr->AddObjectList(x - 250, -y + 250); //\dhfb
 		g_ScenMgr->SetObjCnt(g_ScenMgr->GetObjCnt() + 1);
 		g_LButtonDown = false;
 	}

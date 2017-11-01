@@ -23,13 +23,29 @@ SceneMgr::~SceneMgr()
 
 void SceneMgr::Update(float xvector, float yvector, DWORD time)
 {
+	CollisionCheckList();
 	for (int i = 0; i< m_objectCnt; ++i)
 	{
-		m_objectList[i]->PositionUpdate(xvector, yvector, time);
-		//cout << "d" << endl; 
+
+		if (m_objectList[i] != NULL)
+		{
+			
+			if (m_objectList[i]->GetLife() < 0.0001f || m_objectList[i]->GetLifeTime() <0.0001f)
+			{
+
+				delete m_objectList[i];
+				m_objectList[i] = NULL;
+			}
+			else
+			{
+				m_objectList[i]->PositionUpdate(xvector, yvector, time);
+
+			}
+		}
 	}
+
 }
-bool SceneMgr::CollisionCheck(Object &a, Object &b)
+bool SceneMgr::CollisionCheck(Object *a, Object *b)
 {
 	float AlowerXbound = 0.0f;
 	float AlowerYbound = 0.0f;
@@ -42,42 +58,118 @@ bool SceneMgr::CollisionCheck(Object &a, Object &b)
 	float BHighYbound = 0.0f;
 
 	
-	AHighXbound = a.GetPositionX() + a.GetSize() / 2;
-	AHighYbound = a.GetPositionY() + a.GetSize() / 2;
+	AHighXbound = a->GetPositionX() + a->GetSize() / 2.f;
+	AHighYbound = a->GetPositionY() + a->GetSize() / 2.f;
 
-	AlowerXbound = a.GetPositionX() - a.GetSize() / 2;
-	AlowerYbound = a.GetPositionY() - a.GetSize() / 2;
+	AlowerXbound = a->GetPositionX() - a->GetSize() / 2.f;
+	AlowerYbound = a->GetPositionY() - a->GetSize() / 2.f;
 
-	BHighXbound = b.GetPositionX() + b.GetSize() / 2;
-	BHighYbound = b.GetPositionY() + b.GetSize() / 2;
+	BHighXbound = b->GetPositionX() + b->GetSize() / 2.f;
+	BHighYbound = b->GetPositionY() + b->GetSize() / 2.f;
 
-	BlowerXbound = b.GetPositionX() - b.GetSize() / 2;
-	BlowerYbound = b.GetPositionY() - b.GetSize() / 2;
+	BlowerXbound = b->GetPositionX() - b->GetSize() / 2.f;
+	BlowerYbound = b->GetPositionY() - b->GetSize() / 2.f;
 	
-	if (AHighXbound > AlowerXbound)
+	if (AHighXbound < BlowerXbound)
 	{
-		return true;
+		return false;
 	}
-	if (AHighYbound > AlowerYbound)
+	if (AHighYbound < BlowerYbound)
 	{
-		return true;
+		return false;
 	}
-	if (AlowerYbound < AHighYbound)
+	if (AlowerYbound > BHighYbound)
 	{
-		return true;
+		return false;
 	}
-	if (AlowerXbound < AHighXbound)
+	if (AlowerXbound > BHighXbound)
 	{
-		return true;
+		return false;
 	}
+	return true;
 }
 void SceneMgr::Render()
 {
 	
 	for (int i = 0; i < m_objectCnt; ++i)
 	{
-		m_Renderer->DrawSolidRect(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(), 
-			m_objectList[i]->GetPositionZ(), m_objectList[i]->GetSize(), m_objectList[i]->GetR(),
-			m_objectList[i]->GetG(), m_objectList[i]->GetB(), m_objectList[i]->GetA());
+		if (m_objectList[i] != NULL)
+		{
+			m_Renderer->DrawSolidRect(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(),
+				m_objectList[i]->GetPositionZ(), m_objectList[i]->GetSize(), m_objectList[i]->GetR(),
+				m_objectList[i]->GetG(), m_objectList[i]->GetB(), m_objectList[i]->GetA());
+		}
+	}
+}
+void SceneMgr::CollisionCheckList()
+{
+	int collisionCount = 0;
+	for (int i = 0; i < MAX_OBJECTS_COUNT; i++)
+	{
+		collisionCount = 0;
+		if (m_objectList[i] != NULL)
+		{
+			for (int j = 0; j < MAX_OBJECTS_COUNT; j++)
+			{
+				if (i == j)
+					continue;
+
+				if (m_objectList[j] != NULL)
+				{
+					
+					if (CollisionCheck(m_objectList[i],m_objectList[j]))
+					{
+						collisionCount++;
+					}
+				}
+			}
+			if (collisionCount > 0)
+			{
+				m_objectList[i]->SetRGBA(1, 0, 0, 1);
+				m_objectList[i]->SetLife(m_objectList[i]->GetLife() - 1.f);
+				
+				
+			}
+			else
+			{
+				m_objectList[i]->SetRGBA(1,1,1,1);
+			}
+		}
+	}
+
+
+}
+int	SceneMgr::AddObjectList(float x, float y)
+{
+	//Find empty slot
+	for (int i = 0; i < MAX_OBJECTS_COUNT; i++)
+	{
+		if (m_objectList[i] == NULL)
+		{
+			m_objectList[i] = new Object(x, y);
+			return i;
+		}
+	}
+
+	//slots are full
+	std::cout << "slots are full \n";
+	return -1;
+}
+void SceneMgr::DeleteObject(int index)
+{
+	if (m_objectList[index] != NULL)
+	{
+		delete m_objectList[index];
+		m_objectList[index] = NULL;
+	}
+}
+void SceneMgr::DeleteOlderObject()
+{
+	for (int i = 0; i < m_objectCnt; ++i)
+	{
+		if (m_objectList[i] != NULL)
+		{
+			DeleteObject(rand() % m_objectCnt);
+		}
 	}
 }
