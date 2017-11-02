@@ -1,6 +1,9 @@
 #pragma once
 #include "Object.h"
 #include "Renderer.h"
+
+
+
 class SceneMgr
 {
 public:
@@ -17,7 +20,7 @@ public:
 	void Render();
 	bool CollisionCheck(Object *a, Object *b);
 	void CollisionCheckList();
-	int	 AddObjectList(float x, float y);
+	int	 AddObjectList(float x, float y,int objecttype);
 	void DeleteObject(int index);
 	void DeleteOlderObject();
 public:

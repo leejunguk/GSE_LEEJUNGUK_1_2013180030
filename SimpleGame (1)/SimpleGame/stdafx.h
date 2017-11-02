@@ -13,3 +13,8 @@ using namespace std;
 #pragma comment(lib, "winmm.lib")
 
 const int MAX_OBJECTS_COUNT = 1000;
+//object Type define
+const int OBJECT_BULDING = 1;
+const int OBJECT_CHARACTER = 2;
+const int OBJECT_BULLET = 3;
+const int OBJECT_ARROW = 4;

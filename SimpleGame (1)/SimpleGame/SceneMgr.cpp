@@ -116,37 +116,68 @@ void SceneMgr::CollisionCheckList()
 
 				if (m_objectList[j] != NULL)
 				{
+					if (m_objectList[i]->GetObjectType() == OBJECT_BULDING && m_objectList[j]->GetObjectType() == OBJECT_BULLET)
+					{
+
+					}
+					else
+					{
+						m_objectList[i]->SetRGBA(1, 0, 0, 1);
+					}
 					
 					if (CollisionCheck(m_objectList[i],m_objectList[j]))
 					{
 						collisionCount++;
+						if (m_objectList[i]->GetObjectType() == m_objectList[j]->GetObjectType() && m_objectList[i]->GetObjectType() == OBJECT_CHARACTER)
+						{
+							//m_objectList[i]->SetLife(m_objectList[i]->GetLife() - 1.f); 충돌데미지 없게
+						}
+						if (m_objectList[i]->GetObjectType() == OBJECT_BULDING && m_objectList[j]->GetObjectType() == OBJECT_CHARACTER)
+						{
+							m_objectList[i]->SetLife(m_objectList[i]->GetLife() - m_objectList[j]->GetLife());
+							
+							m_objectList[j]->SetLife(0.0f);
+						}
+						if (m_objectList[i]->GetObjectType() == OBJECT_CHARACTER && m_objectList[j]->GetObjectType() == OBJECT_BULLET)
+						{
+							m_objectList[i]->SetLife(m_objectList[i]->GetLife() - m_objectList[j]->GetLife());
+							m_objectList[j]->SetLife(0.0f);
+						}
 					}
+					else
+					{
+						//m_objectList[i]->SetRGBA(1,1,1,1);
+						if (m_objectList[i]->GetObjectType() == OBJECT_CHARACTER)
+							m_objectList[i]->SetRGBA(1, 1, 1, 1);
+						if (m_objectList[i]->GetObjectType() == OBJECT_BULDING)
+							m_objectList[i]->SetRGBA(1, 1, 0, 1);
+					}
+					
+					
 				}
 			}
+
 			if (collisionCount > 0)
 			{
-				m_objectList[i]->SetRGBA(1, 0, 0, 1);
-				m_objectList[i]->SetLife(m_objectList[i]->GetLife() - 1.f);
-				
-				
+			
+				//m_objectList[i]->SetRGBA(1, 0, 0, 1);
+		
 			}
-			else
-			{
-				m_objectList[i]->SetRGBA(1,1,1,1);
-			}
+			
 		}
 	}
 
 
 }
-int	SceneMgr::AddObjectList(float x, float y)
+int	SceneMgr::AddObjectList(float x, float y,int objecttype)
 {
 	//Find empty slot
 	for (int i = 0; i < MAX_OBJECTS_COUNT; i++)
 	{
 		if (m_objectList[i] == NULL)
 		{
-			m_objectList[i] = new Object(x, y);
+
+			m_objectList[i] = new Object(x, y,objecttype);
 			return i;
 		}
 	}

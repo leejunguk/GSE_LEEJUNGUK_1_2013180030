@@ -3,7 +3,7 @@ class Object
 {
 public:
 	Object();
-	Object(float x, float y);
+	Object(float x, float y,int objecttype);
 	~Object();
 public:
 	inline void SetPostionXYZ(float x, float y, float z) { m_x = x, m_y = y, m_z = z; }
@@ -21,7 +21,7 @@ public:
 	inline float GetSize(void) { return m_size; };
 	inline float GetLife(void) { return m_Life; };
 	inline float GetLifeTime(void) { return m_LifeTime; };
-
+	inline int GetObjectType(void) { return m_type; };
 	void PositionUpdate(float xvector, float yvector, DWORD time);
 private:
 	float m_x;
@@ -34,8 +34,10 @@ private:
 	float m_a;
 	float m_Vx;
 	float m_Vy;
+	float m_Speed;
 	char*  m_name;
 	float m_Life;
 	float m_LifeTime;
+	int	  m_type;
 };
 

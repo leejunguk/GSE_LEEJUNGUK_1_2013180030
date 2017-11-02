@@ -42,7 +42,14 @@ void RenderScene(void)
 	/////
 	DWORD currentTime = timeGetTime();
 	DWORD ElaspeTime = currentTime - g_prevTime;
-	g_prevTime = currentTime;
+
+	if (currentTime > g_prevTime +15 )
+	{
+		g_ScenMgr->AddObjectList(0, 0, OBJECT_BULLET); //\dhfb
+		g_ScenMgr->SetObjCnt(g_ScenMgr->GetObjCnt() + 1);
+	}
+
+	
 	
 	//elsapse time curr time - gprevtime
 	//updateall object
@@ -66,9 +73,10 @@ void RenderScene(void)
 	//	, g_ScenMgr->m_objectList[i]->GetSize(), g_ScenMgr->m_objectList[i]->GetR(), g_ScenMgr->m_objectList[i]->GetG(), g_ScenMgr->m_objectList[i]->GetB(), g_ScenMgr->m_objectList[i]->GetA());
 	//	
 	//}
-	g_ScenMgr->Update(5.1f, 5.1f, ElaspeTime);
+	g_ScenMgr->Update(1.0f, 1.0f, ElaspeTime);
 	g_ScenMgr->Render();
 
+	g_prevTime = currentTime;
 	glutSwapBuffers();
 }
 
@@ -89,14 +97,15 @@ void MouseInput(int button, int state, int x, int y)
 		//Object* mousobj = new Object(x - 250, -y + 250, 0);
 		//mousobj->SetSize(5.f);
 		//mousobj->SetRGBA(1, 1, 1, 1);
-		if (10 <= g_ScenMgr->GetObjCnt() )
+		//10이상 없애는 코드 
+	/*	if (10 <= g_ScenMgr->GetObjCnt() )
 		{
 			g_ScenMgr->SetObjCnt(g_ScenMgr->GetObjCnt() - 1);
 			g_ScenMgr->DeleteOlderObject();
 			
-		}
+		}*/
 
-		g_ScenMgr->AddObjectList(x - 250, -y + 250); //\dhfb
+		g_ScenMgr->AddObjectList(x - 250, -y + 250,OBJECT_CHARACTER); //\dhfb
 		g_ScenMgr->SetObjCnt(g_ScenMgr->GetObjCnt() + 1);
 		g_LButtonDown = false;
 	}
@@ -139,6 +148,9 @@ int main(int argc, char **argv)
 	{
 		std::cout << "Renderer could not be initialized.. \n";
 	}*/
+
+	g_ScenMgr->AddObjectList(0, 0, OBJECT_BULDING); //\dhfb
+	g_ScenMgr->SetObjCnt(g_ScenMgr->GetObjCnt() + 1);
 
 	frame = 1;
 
