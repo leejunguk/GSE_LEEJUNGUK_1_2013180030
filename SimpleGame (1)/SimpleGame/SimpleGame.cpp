@@ -151,11 +151,9 @@ int main(int argc, char **argv)
 
 	g_ScenMgr->AddObjectList(0, 0, OBJECT_BULDING); //\dhfb
 	g_ScenMgr->SetObjCnt(g_ScenMgr->GetObjCnt() + 1);
-
 	frame = 1;
 
-	
-	
+	g_ScenMgr->m_texCharacter = g_Renderer->CreatePngTexture("Texture/bunker.png");
 
 
 	//√ ±‚»≠

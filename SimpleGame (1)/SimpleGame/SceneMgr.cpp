@@ -27,15 +27,37 @@ void SceneMgr::Update(float xvector, float yvector, DWORD time)
 	float timer = 0.0f;
 	timer += float(time);
 
-	if (timer >= 0.005f)
+	//if (timer >= 0.005f)
+	//{
+	//	AddObjectList(0, 0, OBJECT_BULLET); //\dhfb
+	//	SetObjCnt(GetObjCnt() + 1);
+	//	timer = 0.0f;
+	//}
+	//0.5초마다 에로우 
+	for (int i = 0; i < m_objectCnt; ++i)
 	{
-		AddObjectList(0, 0, OBJECT_BULLET); //\dhfb
-		SetObjCnt(GetObjCnt() + 1);
-		timer = 0.0f;
+		if (m_objectList[i] != NULL)
+		{
+			DWORD CurrentTime = timeGetTime();
+			if (CurrentTime - m_objectList[i]->GetObjectTimer() >= 500.f  && m_objectList[i]->GetObjectType() == OBJECT_CHARACTER)
+			{
+				AddObjectList(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(), OBJECT_ARROW,i); //\dhfb
+				SetObjCnt(GetObjCnt() + 1);
+				m_objectList[i]->SetTimer(timeGetTime());
+				m_objectList[i]->SetMyFriend(i);
+			}
+		}
+
 	}
+
+
+
 	for (int i = 0; i< m_objectCnt; ++i)
 	{
 
+
+
+		//포지션 업데이트 루프 
 		if (m_objectList[i] != NULL)
 		{
 			
@@ -50,8 +72,18 @@ void SceneMgr::Update(float xvector, float yvector, DWORD time)
 				m_objectList[i]->PositionUpdate(xvector, yvector, time);
 
 			}
+			 //시간추가 코드 
+			//if (m_objectList[i]->GetObjectTimer() - timeGetTime() >= 5000.0f  && m_objectList[i]->GetObjectType()== OBJECT_CHARACTER)
+			//{
+			//	AddObjectList(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(), OBJECT_BULLET); //\dhfb
+			//	SetObjCnt(GetObjCnt() + 1);
+			//	m_objectList[i]->SetTimer(0.0f);
+			//}
+			
 		}
 	}
+
+	
 
 }
 bool SceneMgr::CollisionCheck(Object *a, Object *b)
@@ -104,9 +136,19 @@ void SceneMgr::Render()
 	{
 		if (m_objectList[i] != NULL)
 		{
-			m_Renderer->DrawSolidRect(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(),
-				m_objectList[i]->GetPositionZ(), m_objectList[i]->GetSize(), m_objectList[i]->GetR(),
-				m_objectList[i]->GetG(), m_objectList[i]->GetB(), m_objectList[i]->GetA());
+			if (m_objectList[i]->GetObjectType() == OBJECT_BULDING)
+			{
+				
+				m_Renderer->DrawTexturedRect(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(),
+					m_objectList[i]->GetPositionZ(), m_objectList[i]->GetSize(), m_objectList[i]->GetR(),
+					m_objectList[i]->GetG(), m_objectList[i]->GetB(), m_objectList[i]->GetA(),m_texCharacter);
+			}
+			else
+			{
+				m_Renderer->DrawSolidRect(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(),
+					m_objectList[i]->GetPositionZ(), m_objectList[i]->GetSize(), m_objectList[i]->GetR(),
+					m_objectList[i]->GetG(), m_objectList[i]->GetB(), m_objectList[i]->GetA());
+			}
 		}
 	}
 }
@@ -129,10 +171,10 @@ void SceneMgr::CollisionCheckList()
 					{
 
 					}
-					else
+					/*else
 					{
 						m_objectList[i]->SetRGBA(1, 0, 0, 1);
-					}
+					}*/
 					
 					if (CollisionCheck(m_objectList[i],m_objectList[j]))
 					{
@@ -152,6 +194,13 @@ void SceneMgr::CollisionCheckList()
 							m_objectList[i]->SetLife(m_objectList[i]->GetLife() - m_objectList[j]->GetLife());
 							m_objectList[j]->SetLife(0.0f);
 						}
+						//에로우와 캐릭터
+					/*	if(m_objectList[i]->GetObjectType() == OBJECT_CHARACTER && m_objectList[j]->GetObjectType() == OBJECT_ARROW)
+						{
+							m_objectList[i]->SetLife(m_objectList[i]->GetLife() - m_objectList[j]->GetLife());
+							m_objectList[j]->SetLife(0.0f);
+						}*/
+
 					}
 					else
 					{
@@ -187,6 +236,27 @@ int	SceneMgr::AddObjectList(float x, float y,int objecttype)
 		{
 
 			m_objectList[i] = new Object(x, y,objecttype);
+			DWORD CreateObjectTime = timeGetTime();
+			m_objectList[i]->SetTimer(CreateObjectTime);
+			return i;
+		}
+	}
+
+	//slots are full
+	std::cout << "slots are full \n";
+	return -1;
+}
+int	SceneMgr::AddObjectList(float x, float y, int objecttype,int friendnumber)
+{
+	//Find empty slot
+	for (int i = 0; i < MAX_OBJECTS_COUNT; i++)
+	{
+		if (m_objectList[i] == NULL)
+		{
+
+			m_objectList[i] = new Object(x, y, objecttype, friendnumber);
+			DWORD CreateObjectTime = timeGetTime();
+			m_objectList[i]->SetTimer(CreateObjectTime);
 			return i;
 		}
 	}
