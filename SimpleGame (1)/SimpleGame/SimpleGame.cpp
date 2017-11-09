@@ -39,15 +39,15 @@ void RenderScene(void)
 	glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
 
 
-	/////
+	///////
 	DWORD currentTime = timeGetTime();
 	DWORD ElaspeTime = currentTime - g_prevTime;
 
-	if (currentTime > g_prevTime +15 )
-	{
-		g_ScenMgr->AddObjectList(0, 0, OBJECT_BULLET); //\dhfb
-		g_ScenMgr->SetObjCnt(g_ScenMgr->GetObjCnt() + 1);
-	}
+	//if (currentTime > g_prevTime +15 )
+	//{
+	//	g_ScenMgr->AddObjectList(0, 0, OBJECT_BULLET); //\dhfb
+	//	g_ScenMgr->SetObjCnt(g_ScenMgr->GetObjCnt() + 1);
+	//}
 
 	
 	

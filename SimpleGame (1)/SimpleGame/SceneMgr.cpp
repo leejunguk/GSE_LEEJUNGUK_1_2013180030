@@ -24,6 +24,15 @@ SceneMgr::~SceneMgr()
 void SceneMgr::Update(float xvector, float yvector, DWORD time)
 {
 	CollisionCheckList();
+	float timer = 0.0f;
+	timer += float(time);
+
+	if (timer >= 0.005f)
+	{
+		AddObjectList(0, 0, OBJECT_BULLET); //\dhfb
+		SetObjCnt(GetObjCnt() + 1);
+		timer = 0.0f;
+	}
 	for (int i = 0; i< m_objectCnt; ++i)
 	{
 
