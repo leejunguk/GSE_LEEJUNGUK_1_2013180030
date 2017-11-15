@@ -26,7 +26,8 @@ void SceneMgr::Update(float xvector, float yvector, DWORD time)
 	CollisionCheckList();
 	float timer = 0.0f;
 	timer += float(time);
-
+	int tmpFriendNum = 0;
+	
 	//if (timer >= 0.005f)
 	//{
 	//	AddObjectList(0, 0, OBJECT_BULLET); //\dhfb
@@ -41,7 +42,25 @@ void SceneMgr::Update(float xvector, float yvector, DWORD time)
 			DWORD CurrentTime = timeGetTime();
 			if (CurrentTime - m_objectList[i]->GetObjectTimer() >= 500.f  && m_objectList[i]->GetObjectType() == OBJECT_CHARACTER)
 			{
-				AddObjectList(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(), OBJECT_ARROW,i); //\dhfb
+				tmpFriendNum = AddObjectList(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(), OBJECT_ARROW,i); //\dhfb
+				SetObjCnt(GetObjCnt() + 1);
+				m_objectList[i]->SetTimer(timeGetTime());
+				m_objectList[i]->SetMyFriend(tmpFriendNum);
+			}
+		}
+
+	}
+
+	//빨간 총알도 추가
+
+	for (int i = 0; i < m_objectCnt; ++i)
+	{
+		if (m_objectList[i] != NULL)
+		{
+			DWORD CurrentTime1 = timeGetTime();
+			if (CurrentTime1 - m_objectList[i]->GetObjectTimer() >= 500.f  && m_objectList[i]->GetObjectType() == OBJECT_BULDING)
+			{
+				AddObjectList(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(), OBJECT_BULLET, i); //\dhfb
 				SetObjCnt(GetObjCnt() + 1);
 				m_objectList[i]->SetTimer(timeGetTime());
 				m_objectList[i]->SetMyFriend(i);
@@ -49,6 +68,8 @@ void SceneMgr::Update(float xvector, float yvector, DWORD time)
 		}
 
 	}
+	//=======================================================
+
 
 
 
@@ -143,6 +164,14 @@ void SceneMgr::Render()
 					m_objectList[i]->GetPositionZ(), m_objectList[i]->GetSize(), m_objectList[i]->GetR(),
 					m_objectList[i]->GetG(), m_objectList[i]->GetB(), m_objectList[i]->GetA(),m_texCharacter);
 			}
+			else if (m_objectList[i]->GetObjectType() == OBJECT_CHARACTER)
+			{
+
+				m_Renderer->DrawTexturedRect(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(),
+					m_objectList[i]->GetPositionZ(), m_objectList[i]->GetSize(), m_objectList[i]->GetR(),
+					m_objectList[i]->GetG(), m_objectList[i]->GetB(), m_objectList[i]->GetA(), m_airCharacter);
+			}
+
 			else
 			{
 				m_Renderer->DrawSolidRect(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(),
@@ -195,11 +224,34 @@ void SceneMgr::CollisionCheckList()
 							m_objectList[j]->SetLife(0.0f);
 						}
 						//에로우와 캐릭터
-					/*	if(m_objectList[i]->GetObjectType() == OBJECT_CHARACTER && m_objectList[j]->GetObjectType() == OBJECT_ARROW)
+						if(m_objectList[i]->GetObjectType() == OBJECT_CHARACTER && m_objectList[j]->GetObjectType() == OBJECT_ARROW )
 						{
-							m_objectList[i]->SetLife(m_objectList[i]->GetLife() - m_objectList[j]->GetLife());
-							m_objectList[j]->SetLife(0.0f);
-						}*/
+							if (i == m_objectList[j]->GetMyFriend())
+							{
+								//cout << "";
+							}
+							else
+							{
+								m_objectList[i]->SetLife(m_objectList[i]->GetLife() - m_objectList[j]->GetLife());
+								m_objectList[j]->SetLife(0.0f);
+							}
+
+						}
+						//에로우와 빌딩   나중에 요거 조건 묶어서 함수로 빼고 싶다 ..;;;
+						if (m_objectList[i]->GetObjectType() == OBJECT_BULDING && m_objectList[j]->GetObjectType() == OBJECT_ARROW)
+						{
+							if (i == m_objectList[j]->GetMyFriend())
+							{
+								//cout << "";
+							}
+							else
+							{
+								m_objectList[i]->SetLife(m_objectList[i]->GetLife() - m_objectList[j]->GetLife());
+								m_objectList[j]->SetLife(0.0f);
+							}
+
+						}
+
 
 					}
 					else

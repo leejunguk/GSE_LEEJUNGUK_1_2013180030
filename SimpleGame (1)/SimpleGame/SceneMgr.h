@@ -26,6 +26,7 @@ public:
 	void DeleteObject(int index);
 	void DeleteOlderObject();
 	GLuint m_texCharacter;
+	GLuint m_airCharacter;
 public:
 	inline void SetObjCnt(int cnt) { m_objectCnt = cnt; };
 	inline int GetObjCnt() { return m_objectCnt; };

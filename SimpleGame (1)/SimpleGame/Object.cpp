@@ -32,7 +32,7 @@ Object::Object(float x, float y,int objecttype)
 		
 		m_Life = 10.f;
 		m_Speed = 300.f;
-		m_size = 10.f;
+		m_size = 40.f;
 		m_r = 1.f;
 		m_g = 1.f;
 		m_b = 1;
@@ -86,6 +86,7 @@ Object::Object(float x, float y,int objecttype)
 Object::Object(float x, float y, int objecttype,int friendnumber)
 {
 	m_objectTimer = 0.00000f;
+	m_myFriend = friendnumber;
 	if (objecttype == OBJECT_BULDING)
 	{
 		m_type = OBJECT_BULDING;
@@ -150,6 +151,7 @@ Object::Object(float x, float y, int objecttype,int friendnumber)
 		m_x = x, m_y = y;
 		m_Vx = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
 		m_Vy = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
+		
 		return;
 	}
 

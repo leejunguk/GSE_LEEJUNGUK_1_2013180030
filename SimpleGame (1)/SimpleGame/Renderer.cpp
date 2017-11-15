@@ -71,8 +71,8 @@ void Renderer::CreateVertexBufferObjects()
 		-1.f / m_WindowSizeX, 1.f / m_WindowSizeY, 0.f,
 		 1.f / m_WindowSizeX, 1.f / m_WindowSizeY, 0.f, //Triangle1
 		-1.f / m_WindowSizeX, -1.f / m_WindowSizeY, 0.f, 
-		 1.f / m_WindowSizeX, 1.f / m_WindowSizeY, 0.f,
-		 1.f / m_WindowSizeX, -1.f / m_WindowSizeY, 0.f, //Triangle2
+		 1.f / m_WindowSizeX, 1.f / m_WindowSizeY, 0.f, 
+		 1.f / m_WindowSizeX, -1.f / m_WindowSizeY, 0.f, //Triangle2		//버텍스 6개 선언 각각 프리미티브 선언 내부가 꽉채워짐
 	};
 
 	glGenBuffers(1, &m_VBORect);

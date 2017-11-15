@@ -38,7 +38,8 @@ void RenderScene(void)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
 
-
+	static int a = 0;
+	a++;
 	///////
 	DWORD currentTime = timeGetTime();
 	DWORD ElaspeTime = currentTime - g_prevTime;
@@ -154,7 +155,7 @@ int main(int argc, char **argv)
 	frame = 1;
 
 	g_ScenMgr->m_texCharacter = g_Renderer->CreatePngTexture("Texture/bunker.png");
-
+	g_ScenMgr->m_airCharacter = g_Renderer->CreatePngTexture("Texture/airforce.png");
 
 	//√ ±‚»≠
 
