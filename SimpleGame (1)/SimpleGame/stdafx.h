@@ -18,3 +18,9 @@ const int OBJECT_BULDING = 1;
 const int OBJECT_CHARACTER = 2;
 const int OBJECT_BULLET = 3;
 const int OBJECT_ARROW = 4;
+
+const int SIZEWINDOWWIDTH = 500;
+const int SIZEWINDOWHEIGHT = 800;
+
+const int ATEAM = 1;
+const int BTEAM = 2;

@@ -13,7 +13,11 @@ public:
 	inline void SetLife(float Life) { m_Life = Life; }
 	inline void SetLifeTime(float LifeTime) { m_LifeTime = LifeTime; }
 	inline void SetTimer(DWORD Timer) { m_objectTimer = Timer; }
+	//inline void SetChracterTimer(DWORD Timer) { m_chracterTimer = Timer; }
+	inline void SetChracterTime(float time) { m_ChracterLastTime = time; }
 	inline void SetMyFriend(int friendnumber) { m_myFriend = friendnumber; };
+	inline void SetMyLastBulletTime(float time) { m_bulletLastTime = time; };
+	inline void SetMyLastArrowTime(float time) { m_ArrowLastTime = time; };
 	inline float GetPositionX(void) { return m_x; }
 	inline float GetPositionY(void) { return m_y; }
 	inline float GetPositionZ(void) { return m_z; }
@@ -26,7 +30,12 @@ public:
 	inline float GetLifeTime(void) { return m_LifeTime; };
 	inline int GetObjectType(void) { return m_type; };
 	inline DWORD GetObjectTimer(void) { return m_objectTimer; };
+	//inline DWORD GetCharacterTimer(void) { return m_chracterTimer; };
+	inline float GetCharacterTime(void) { return m_ChracterLastTime; };
 	inline int GetMyFriend(void) { return m_myFriend; };
+	inline int GetMyTEAM(void) { return m_TeamNumber; };
+	inline float GetBulletTime(void) { return m_bulletLastTime; };
+	inline float GetArrowTime(void) { return m_ArrowLastTime; };
 	void PositionUpdate(float xvector, float yvector, DWORD time);
 private:
 	float m_x;
@@ -45,6 +54,11 @@ private:
 	float m_LifeTime;
 	int	  m_type;
 	int   m_myFriend;
+	int   m_TeamNumber;
 	DWORD m_objectTimer;
+	DWORD m_chracterTimer;
+	float m_bulletLastTime;
+	float m_ArrowLastTime;
+	float m_ChracterLastTime;
 };
 

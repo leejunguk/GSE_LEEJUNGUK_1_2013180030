@@ -27,7 +27,8 @@ Object *g_Object = NULL;
 SceneMgr* g_ScenMgr = NULL;
 
 DWORD g_prevTime = NULL;
-
+DWORD ElaspeTime;
+float BlueTeamTimer;
 //Object *objectlist[1000];
 static float frame;
 static int objnum = 0;
@@ -42,8 +43,9 @@ void RenderScene(void)
 	a++;
 	///////
 	DWORD currentTime = timeGetTime();
-	DWORD ElaspeTime = currentTime - g_prevTime;
-
+	ElaspeTime = currentTime - g_prevTime;
+	
+	BlueTeamTimer += float(ElaspeTime) * 0.00001f;
 	//if (currentTime > g_prevTime +15 )
 	//{
 	//	g_ScenMgr->AddObjectList(0, 0, OBJECT_BULLET); //\dhfb
@@ -95,19 +97,19 @@ void MouseInput(int button, int state, int x, int y)
 	}
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_UP && g_LButtonDown == true)
 	{
-		//Object* mousobj = new Object(x - 250, -y + 250, 0);
-		//mousobj->SetSize(5.f);
-		//mousobj->SetRGBA(1, 1, 1, 1);
-		//10이상 없애는 코드 
-	/*	if (10 <= g_ScenMgr->GetObjCnt() )
-		{
-			g_ScenMgr->SetObjCnt(g_ScenMgr->GetObjCnt() - 1);
-			g_ScenMgr->DeleteOlderObject();
-			
-		}*/
 
-		g_ScenMgr->AddObjectList(x - 250, -y + 250,OBJECT_CHARACTER); //\dhfb
-		g_ScenMgr->SetObjCnt(g_ScenMgr->GetObjCnt() + 1);
+		//\dhfb
+		if (-400 <= (-y + SIZEWINDOWHEIGHT / 2) && (-y + SIZEWINDOWHEIGHT / 2) <= 0 &&BlueTeamTimer >0.07f)
+		{
+			g_ScenMgr->AddObjectList(x - SIZEWINDOWWIDTH / 2, -y + SIZEWINDOWHEIGHT / 2, OBJECT_CHARACTER,BTEAM);
+			g_ScenMgr->SetObjCnt(g_ScenMgr->GetObjCnt() + 1);
+			BlueTeamTimer = 0.f;
+			
+		}
+		else
+		{
+
+		}
 		g_LButtonDown = false;
 	}
 	
@@ -129,7 +131,7 @@ int main(int argc, char **argv)
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(0, 0);
-	glutInitWindowSize(500, 500);
+	glutInitWindowSize(SIZEWINDOWWIDTH, SIZEWINDOWHEIGHT);
 	glutCreateWindow("Game Software Engineering KPU");
 	
 	glewInit();
@@ -150,12 +152,37 @@ int main(int argc, char **argv)
 		std::cout << "Renderer could not be initialized.. \n";
 	}*/
 
-	g_ScenMgr->AddObjectList(0, 0, OBJECT_BULDING); //\dhfb
+	//ATEAM 왼쪽 상단건물
+	g_ScenMgr->AddObjectList(-200, 300, OBJECT_BULDING,ATEAM); //\dhfb
 	g_ScenMgr->SetObjCnt(g_ScenMgr->GetObjCnt() + 1);
 	frame = 1;
+	//ATEAM 중앙 상단건물
+	g_ScenMgr->AddObjectList(0, 300, OBJECT_BULDING, ATEAM); //\dhfb
+	g_ScenMgr->SetObjCnt(g_ScenMgr->GetObjCnt() + 1);
+
+	//ATEAM 오른쪽 상단 건물
+	g_ScenMgr->AddObjectList(200, 300, OBJECT_BULDING, ATEAM); //\dhfb
+	g_ScenMgr->SetObjCnt(g_ScenMgr->GetObjCnt() + 1);
+
+
+	//===================================================================BTEAM
+
+	//BTEAM 왼쪽 하단건물
+	g_ScenMgr->AddObjectList(-200, -300, OBJECT_BULDING, BTEAM); //\dhfb
+	g_ScenMgr->SetObjCnt(g_ScenMgr->GetObjCnt() + 1);
+	frame = 1;
+	//BTEAM 중앙 하단건물
+	g_ScenMgr->AddObjectList(0, -300, OBJECT_BULDING, BTEAM); //\dhfb
+	g_ScenMgr->SetObjCnt(g_ScenMgr->GetObjCnt() + 1);
+
+	//BTEAM 오른쪽 하단 건물
+	g_ScenMgr->AddObjectList(200, -300, OBJECT_BULDING, BTEAM); //\dhfb
+	g_ScenMgr->SetObjCnt(g_ScenMgr->GetObjCnt() + 1);
+
+
 
 	g_ScenMgr->m_texCharacter = g_Renderer->CreatePngTexture("Texture/bunker.png");
-	g_ScenMgr->m_airCharacter = g_Renderer->CreatePngTexture("Texture/airforce.png");
+	g_ScenMgr->m_airCharacter = g_Renderer->CreatePngTexture("Texture/Building.png");
 
 	//초기화
 

@@ -7,10 +7,16 @@ Object::Object()
 	m_Life = 100.f;
 	m_LifeTime = 100000.f;
 	m_objectTimer = 0.00000f;
+	m_bulletLastTime = 0.f;
+	m_ArrowLastTime = 0.f;
+	m_ChracterLastTime = 0.f;
 }
 Object::Object(float x, float y,int objecttype)
 {
+	m_bulletLastTime = 0.f;
+	m_ArrowLastTime = 0.f;
 	m_objectTimer = 0.00000f;
+	m_ChracterLastTime = 0.f;
 	if (objecttype == OBJECT_BULDING)
 	{
 		m_type = OBJECT_BULDING;
@@ -83,14 +89,18 @@ Object::Object(float x, float y,int objecttype)
 
 }
 
-Object::Object(float x, float y, int objecttype,int friendnumber)
+Object::Object(float x, float y, int objecttype,int TeamNumber)
 {
 	m_objectTimer = 0.00000f;
-	m_myFriend = friendnumber;
-	if (objecttype == OBJECT_BULDING)
+	m_chracterTimer = 0.000000f;
+	m_myFriend = TeamNumber;
+	m_bulletLastTime = 0.f;
+	m_ArrowLastTime = 0.f;
+	m_ChracterLastTime = 0.f;
+	if (objecttype == OBJECT_BULDING && TeamNumber == ATEAM)
 	{
 		m_type = OBJECT_BULDING;
-		m_x = 0, m_y = 0;
+		m_x = x, m_y = y;
 		m_Life = 500.f;
 		m_Speed = 0.f;
 		m_size = 50.f;
@@ -100,9 +110,26 @@ Object::Object(float x, float y, int objecttype,int friendnumber)
 		m_a = 1;
 		SetRGBA(1, 1, 0, 1);
 		m_LifeTime = 100000.f;
+		m_TeamNumber = ATEAM;
 		return;
 	}
-	else if (objecttype == OBJECT_CHARACTER)
+	else if (objecttype == OBJECT_BULDING && TeamNumber == BTEAM)
+	{
+		m_type = OBJECT_BULDING;
+		m_x = x, m_y = y;
+		m_Life = 500.f;
+		m_Speed = 0.f;
+		m_size = 50.f;
+		m_r = 1;
+		m_g = 1;
+		m_b = 0;
+		m_a = 1;
+		SetRGBA(1, 1, 0, 1);
+		m_LifeTime = 100000.f;
+		m_TeamNumber = BTEAM;
+		return;
+	}
+	else if (objecttype == OBJECT_CHARACTER && TeamNumber == ATEAM)
 	{
 		m_type = OBJECT_CHARACTER;
 
@@ -110,21 +137,40 @@ Object::Object(float x, float y, int objecttype,int friendnumber)
 		m_Speed = 300.f;
 		m_size = 10.f;
 		m_r = 1.f;
-		m_g = 1.f;
+		m_g = 0.f;
+		m_b = 0;
+		m_a = 1;
+		m_LifeTime = 100000.f;
+		m_x = x, m_y = y;
+		m_Vx = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
+		m_Vy = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
+		m_TeamNumber = ATEAM;
+		return;
+	}
+	else if (objecttype == OBJECT_CHARACTER && TeamNumber == BTEAM)
+	{
+		m_type = OBJECT_CHARACTER;
+
+		m_Life = 10.f;
+		m_Speed = 300.f;
+		m_size = 10.f;
+		m_r = 0.f;
+		m_g = 0.f;
 		m_b = 1;
 		m_a = 1;
 		m_LifeTime = 100000.f;
 		m_x = x, m_y = y;
 		m_Vx = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
 		m_Vy = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
+		m_TeamNumber = BTEAM;
 		return;
 	}
-	else if (objecttype == OBJECT_BULLET)
+	else if (objecttype == OBJECT_BULLET && TeamNumber == ATEAM)
 	{
 		m_type = OBJECT_BULLET;
 
 		m_Life = 20.f;
-		m_Speed = 300.f;
+		m_Speed = 600.f;
 		m_size = 2.f;
 		m_r = 1.f;
 		m_g = 0;
@@ -134,27 +180,63 @@ Object::Object(float x, float y, int objecttype,int friendnumber)
 		m_x = x, m_y = y;
 		m_Vx = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
 		m_Vy = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
+		m_TeamNumber = ATEAM;
 		return;
 	}
-	else if (objecttype == OBJECT_ARROW)
+	else if (objecttype == OBJECT_BULLET && TeamNumber == BTEAM)
 	{
-		m_type = OBJECT_ARROW;
+		m_type = OBJECT_BULLET;
 
 		m_Life = 20.f;
-		m_Speed = 300.f;
+		m_Speed = 600.f;
 		m_size = 2.f;
-		m_r = 0;
-		m_g = 1.f;
-		m_b = 0;
+		m_r = 0.f;
+		m_g = 0;
+		m_b = 1;
 		m_a = 1;
 		m_LifeTime = 100000.f;
 		m_x = x, m_y = y;
 		m_Vx = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
 		m_Vy = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
-		
+		m_TeamNumber = BTEAM;
 		return;
 	}
+	else if (objecttype == OBJECT_ARROW&& TeamNumber == ATEAM)
+	{
+		m_type = OBJECT_ARROW;
 
+		m_Life = 10.f;
+		m_Speed = 100.f;
+		m_size = 2.f;
+		m_r = 0.5f;
+		m_g = 0.2f;
+		m_b = 0.7;
+		m_a = 1;
+		m_LifeTime = 100000.f;
+		m_x = x, m_y = y;
+		m_Vx = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
+		m_Vy = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
+		m_TeamNumber = ATEAM;
+		return;
+	}
+	else if (objecttype == OBJECT_ARROW&& TeamNumber == BTEAM)
+	{
+		m_type = OBJECT_ARROW;
+
+		m_Life = 10.f;
+		m_Speed = 100.f;
+		m_size = 2.f;
+		m_r = 1.0f;
+		m_g = 1.0f;
+		m_b = 0.0;
+		m_a = 1;
+		m_LifeTime = 100000.f;
+		m_x = x, m_y = y;
+		m_Vx = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
+		m_Vy = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
+		m_TeamNumber = BTEAM;
+		return;
+	}
 
 
 
@@ -171,27 +253,29 @@ void Object::PositionUpdate(float xvector, float yvector, DWORD time)
 {
 	float elapsetime = (float)time * 0.00001f;
 
-
+	m_bulletLastTime += elapsetime;
+	m_ArrowLastTime += elapsetime;
+	m_ChracterLastTime += elapsetime;
 	m_x = m_x + m_Vx *(xvector * elapsetime) * m_Speed;
 	m_y = m_y + m_Vy *(yvector * elapsetime) * m_Speed;
 	//m_size = 20 * sin(m_x);
 	//m_size = 20;
-	if ( m_x > 250)
+	if ( m_x > SIZEWINDOWWIDTH /2)
 	{
 		m_Vx = - m_Vx;
 		
 	}
-	if (m_x < -250)
+	if (m_x < -(SIZEWINDOWWIDTH / 2))
 	{
 		m_Vx = -m_Vx;
 		
 	}
-	if (m_y > 250)
+	if (m_y > SIZEWINDOWHEIGHT/2)
 	{
 		m_Vy = -m_Vy;
 		
 	}
-	if (m_y < -250)
+	if (m_y < -(SIZEWINDOWHEIGHT / 2))
 	{
 		m_Vy = -m_Vy;
 		

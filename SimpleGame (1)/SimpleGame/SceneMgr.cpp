@@ -6,7 +6,7 @@
 SceneMgr::SceneMgr()
 {
 	m_objectCnt = 0;
-	m_Renderer = new Renderer(500, 500);
+	m_Renderer = new Renderer(SIZEWINDOWWIDTH, SIZEWINDOWHEIGHT);
 	if (!m_Renderer->IsInitialized())
 	{
 		std::cout << "Renderer could not be initialized.. \n";
@@ -34,37 +34,49 @@ void SceneMgr::Update(float xvector, float yvector, DWORD time)
 	//	SetObjCnt(GetObjCnt() + 1);
 	//	timer = 0.0f;
 	//}
-	//0.5초마다 에로우 
+	
+
+	//5초마다 캐릭터 
 	for (int i = 0; i < m_objectCnt; ++i)
 	{
 		if (m_objectList[i] != NULL)
 		{
-			DWORD CurrentTime = timeGetTime();
-			if (CurrentTime - m_objectList[i]->GetObjectTimer() >= 500.f  && m_objectList[i]->GetObjectType() == OBJECT_CHARACTER)
-			{
-				tmpFriendNum = AddObjectList(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(), OBJECT_ARROW,i); //\dhfb
-				SetObjCnt(GetObjCnt() + 1);
-				m_objectList[i]->SetTimer(timeGetTime());
-				m_objectList[i]->SetMyFriend(tmpFriendNum);
-			}
+			//DWORD CurrentTime2 = timeGetTime();
+			//if (m_objectList[i]->GetBulletTime() >= 0.5f  && m_objectList[i]->GetObjectType() == OBJECT_BULDING)
+			//{
+			//	AddObjectList(m_objectList[i]->GetPositionX()+ ((float)std::rand() / (float)RAND_MAX), m_objectList[i]->GetPositionY(), OBJECT_CHARACTER, m_objectList[i]->GetMyTEAM()); //\dhfb
+			//	SetObjCnt(GetObjCnt() + 1);
+			//	m_objectList[i]->SetMyLastBulletTime(0.f);
+			//	m_objectList[i]->SetMyFriend(i);
+			//}
+		}
+
+	}//==========================================================
+	
+	 //0.5초마다 에로우 
+	for (int i = 0; i < m_objectCnt; ++i)
+	{
+		if (m_objectList[i] != NULL)
+		{
+			//DWORD CurrentTime = timeGetTime();
+			//if (CurrentTime - m_objectList[i]->GetObjectTimer() >= 5000.f  && m_objectList[i]->GetObjectType() == OBJECT_CHARACTER)
+			//{
+			//	tmpFriendNum = AddObjectList(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(), OBJECT_ARROW, m_objectList[i]->GetMyTEAM()); //\dhfb
+			//	SetObjCnt(GetObjCnt() + 1);
+			//	m_objectList[i]->SetTimer(timeGetTime());
+			//	m_objectList[i]->SetMyFriend(tmpFriendNum);
+			//}
 		}
 
 	}
 
-	//빨간 총알도 추가
+	//빌딩 블렛 빨간 총알도 추가
 
 	for (int i = 0; i < m_objectCnt; ++i)
 	{
 		if (m_objectList[i] != NULL)
 		{
-			DWORD CurrentTime1 = timeGetTime();
-			if (CurrentTime1 - m_objectList[i]->GetObjectTimer() >= 500.f  && m_objectList[i]->GetObjectType() == OBJECT_BULDING)
-			{
-				AddObjectList(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(), OBJECT_BULLET, i); //\dhfb
-				SetObjCnt(GetObjCnt() + 1);
-				m_objectList[i]->SetTimer(timeGetTime());
-				m_objectList[i]->SetMyFriend(i);
-			}
+			
 		}
 
 	}
@@ -75,9 +87,6 @@ void SceneMgr::Update(float xvector, float yvector, DWORD time)
 
 	for (int i = 0; i< m_objectCnt; ++i)
 	{
-
-
-
 		//포지션 업데이트 루프 
 		if (m_objectList[i] != NULL)
 		{
@@ -90,6 +99,31 @@ void SceneMgr::Update(float xvector, float yvector, DWORD time)
 			}
 			else
 			{
+				//DWORD CurrentTime1 = timeGetTime();
+				//에로우 
+				if (m_objectList[i]->GetArrowTime() >0.03f && m_objectList[i]->GetObjectType() == OBJECT_CHARACTER)
+				{
+					AddObjectList(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(), OBJECT_ARROW, m_objectList[i]->GetMyTEAM()); //\dhfb
+					SetObjCnt(GetObjCnt() + 1);
+					m_objectList[i]->SetMyLastArrowTime(0.f);
+					m_objectList[i]->SetMyFriend(i);
+				}
+				//빌딩총알 
+				if (m_objectList[i]->GetBulletTime() >0.05f && m_objectList[i]->GetObjectType() == OBJECT_BULDING)
+				{
+					AddObjectList(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(), OBJECT_BULLET, m_objectList[i]->GetMyTEAM()); //\dhfb
+					SetObjCnt(GetObjCnt() + 1);
+					m_objectList[i]->SetMyLastBulletTime(0.f);
+					m_objectList[i]->SetMyFriend(i);
+				}
+				if (m_objectList[i]->GetCharacterTime() > 0.05f  && m_objectList[i]->GetObjectType() == OBJECT_BULDING && m_objectList[i]->GetMyTEAM() == ATEAM)
+				{
+					AddObjectList(m_objectList[i]->GetPositionX() + ((float)std::rand() / (float)RAND_MAX), m_objectList[i]->GetPositionY(), OBJECT_CHARACTER, m_objectList[i]->GetMyTEAM()); //\dhfb
+					SetObjCnt(GetObjCnt() + 1);
+					m_objectList[i]->SetChracterTime(0.f);
+					m_objectList[i]->SetMyFriend(i);
+				}
+
 				m_objectList[i]->PositionUpdate(xvector, yvector, time);
 
 			}
@@ -157,19 +191,26 @@ void SceneMgr::Render()
 	{
 		if (m_objectList[i] != NULL)
 		{
-			if (m_objectList[i]->GetObjectType() == OBJECT_BULDING)
+			if (m_objectList[i]->GetObjectType() == OBJECT_BULDING && m_objectList[i]->GetMyTEAM() == ATEAM)
 			{
 				
 				m_Renderer->DrawTexturedRect(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(),
 					m_objectList[i]->GetPositionZ(), m_objectList[i]->GetSize(), m_objectList[i]->GetR(),
 					m_objectList[i]->GetG(), m_objectList[i]->GetB(), m_objectList[i]->GetA(),m_texCharacter);
 			}
-			else if (m_objectList[i]->GetObjectType() == OBJECT_CHARACTER)
+			else if (m_objectList[i]->GetObjectType() == OBJECT_BULDING && m_objectList[i]->GetMyTEAM() == BTEAM)
 			{
 
 				m_Renderer->DrawTexturedRect(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(),
 					m_objectList[i]->GetPositionZ(), m_objectList[i]->GetSize(), m_objectList[i]->GetR(),
 					m_objectList[i]->GetG(), m_objectList[i]->GetB(), m_objectList[i]->GetA(), m_airCharacter);
+			}
+			else if (m_objectList[i]->GetObjectType() == OBJECT_CHARACTER)
+			{
+
+				m_Renderer->DrawSolidRect(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(),
+					m_objectList[i]->GetPositionZ(), m_objectList[i]->GetSize(), m_objectList[i]->GetR(),
+					m_objectList[i]->GetG(), m_objectList[i]->GetB(), m_objectList[i]->GetA());
 			}
 
 			else
@@ -196,10 +237,10 @@ void SceneMgr::CollisionCheckList()
 
 				if (m_objectList[j] != NULL)
 				{
-					if (m_objectList[i]->GetObjectType() == OBJECT_BULDING && m_objectList[j]->GetObjectType() == OBJECT_BULLET)
+					/*if (m_objectList[i]->GetObjectType() == OBJECT_BULDING && m_objectList[j]->GetObjectType() == OBJECT_BULLET)
 					{
 
-					}
+					}*/
 					/*else
 					{
 						m_objectList[i]->SetRGBA(1, 0, 0, 1);
@@ -208,25 +249,24 @@ void SceneMgr::CollisionCheckList()
 					if (CollisionCheck(m_objectList[i],m_objectList[j]))
 					{
 						collisionCount++;
-						if (m_objectList[i]->GetObjectType() == m_objectList[j]->GetObjectType() && m_objectList[i]->GetObjectType() == OBJECT_CHARACTER)
-						{
-							//m_objectList[i]->SetLife(m_objectList[i]->GetLife() - 1.f); 충돌데미지 없게
-						}
-						if (m_objectList[i]->GetObjectType() == OBJECT_BULDING && m_objectList[j]->GetObjectType() == OBJECT_CHARACTER)
-						{
-							m_objectList[i]->SetLife(m_objectList[i]->GetLife() - m_objectList[j]->GetLife());
-							
-							m_objectList[j]->SetLife(0.0f);
-						}
+						
+
 						if (m_objectList[i]->GetObjectType() == OBJECT_CHARACTER && m_objectList[j]->GetObjectType() == OBJECT_BULLET)
 						{
-							m_objectList[i]->SetLife(m_objectList[i]->GetLife() - m_objectList[j]->GetLife());
-							m_objectList[j]->SetLife(0.0f);
+							if (m_objectList[j]->GetMyTEAM() == m_objectList[i]->GetMyTEAM())
+							{
+								//cout << "";
+							}
+							else
+							{
+								m_objectList[i]->SetLife(m_objectList[i]->GetLife() - m_objectList[j]->GetLife());
+								m_objectList[j]->SetLife(0.0f);
+							}
 						}
 						//에로우와 캐릭터
 						if(m_objectList[i]->GetObjectType() == OBJECT_CHARACTER && m_objectList[j]->GetObjectType() == OBJECT_ARROW )
 						{
-							if (i == m_objectList[j]->GetMyFriend())
+							if (m_objectList[j]->GetMyTEAM() == m_objectList[i]->GetMyTEAM())
 							{
 								//cout << "";
 							}
@@ -238,9 +278,24 @@ void SceneMgr::CollisionCheckList()
 
 						}
 						//에로우와 빌딩   나중에 요거 조건 묶어서 함수로 빼고 싶다 ..;;;
-						if (m_objectList[i]->GetObjectType() == OBJECT_BULDING && m_objectList[j]->GetObjectType() == OBJECT_ARROW)
+						//if (m_objectList[i]->GetObjectType() == OBJECT_BULDING && m_objectList[j]->GetObjectType() == OBJECT_ARROW)
+						//{
+						//	if (m_objectList[j]->GetMyTEAM() == m_objectList[i]->GetMyTEAM())
+						//	{
+						//		//cout << "";
+						//	}
+						//	else
+						//	{
+						//		m_objectList[i]->SetLife(m_objectList[i]->GetLife() - m_objectList[j]->GetLife());
+						//		m_objectList[j]->SetLife(0.0f);
+						//	}
+
+						//}
+
+						//빌딩과캐릭터
+						if (m_objectList[i]->GetObjectType() == OBJECT_BULDING && m_objectList[j]->GetObjectType() == OBJECT_CHARACTER)
 						{
-							if (i == m_objectList[j]->GetMyFriend())
+							if (m_objectList[j]->GetMyTEAM() == m_objectList[i]->GetMyTEAM())
 							{
 								//cout << "";
 							}
@@ -249,18 +304,16 @@ void SceneMgr::CollisionCheckList()
 								m_objectList[i]->SetLife(m_objectList[i]->GetLife() - m_objectList[j]->GetLife());
 								m_objectList[j]->SetLife(0.0f);
 							}
-
 						}
-
 
 					}
 					else
 					{
-						//m_objectList[i]->SetRGBA(1,1,1,1);
-						if (m_objectList[i]->GetObjectType() == OBJECT_CHARACTER)
-							m_objectList[i]->SetRGBA(1, 1, 1, 1);
-						if (m_objectList[i]->GetObjectType() == OBJECT_BULDING)
-							m_objectList[i]->SetRGBA(1, 1, 0, 1);
+						////m_objectList[i]->SetRGBA(1,1,1,1);
+						//if (m_objectList[i]->GetObjectType() == OBJECT_CHARACTER)
+						//	m_objectList[i]->SetRGBA(1, 1, 1, 1);
+						//if (m_objectList[i]->GetObjectType() == OBJECT_BULDING)
+						//	m_objectList[i]->SetRGBA(1, 1, 0, 1);
 					}
 					
 					
@@ -288,8 +341,8 @@ int	SceneMgr::AddObjectList(float x, float y,int objecttype)
 		{
 
 			m_objectList[i] = new Object(x, y,objecttype);
-			DWORD CreateObjectTime = timeGetTime();
-			m_objectList[i]->SetTimer(CreateObjectTime);
+			/*DWORD CreateObjectTime = timeGetTime();
+			m_objectList[i]->SetTimer(CreateObjectTime);*/
 			return i;
 		}
 	}
@@ -301,14 +354,14 @@ int	SceneMgr::AddObjectList(float x, float y,int objecttype)
 int	SceneMgr::AddObjectList(float x, float y, int objecttype,int friendnumber)
 {
 	//Find empty slot
-	for (int i = 0; i < MAX_OBJECTS_COUNT; i++)
+	for (int i = 0; i < MAX_OBJECTS_COUNT; ++i)
 	{
 		if (m_objectList[i] == NULL)
 		{
 
 			m_objectList[i] = new Object(x, y, objecttype, friendnumber);
-			DWORD CreateObjectTime = timeGetTime();
-			m_objectList[i]->SetTimer(CreateObjectTime);
+			//DWORD CreateObjectTime = timeGetTime();
+			//m_objectList[i]->SetTimer(CreateObjectTime);
 			return i;
 		}
 	}
