@@ -28,74 +28,32 @@ void SceneMgr::Update(float xvector, float yvector, DWORD time)
 	timer += float(time);
 	int tmpFriendNum = 0;
 	
-	//if (timer >= 0.005f)
-	//{
-	//	AddObjectList(0, 0, OBJECT_BULLET); //\dhfb
-	//	SetObjCnt(GetObjCnt() + 1);
-	//	timer = 0.0f;
-	//}
-	
-
-	//5초마다 캐릭터 
-	for (int i = 0; i < m_objectCnt; ++i)
-	{
-		if (m_objectList[i] != NULL)
-		{
-			//DWORD CurrentTime2 = timeGetTime();
-			//if (m_objectList[i]->GetBulletTime() >= 0.5f  && m_objectList[i]->GetObjectType() == OBJECT_BULDING)
-			//{
-			//	AddObjectList(m_objectList[i]->GetPositionX()+ ((float)std::rand() / (float)RAND_MAX), m_objectList[i]->GetPositionY(), OBJECT_CHARACTER, m_objectList[i]->GetMyTEAM()); //\dhfb
-			//	SetObjCnt(GetObjCnt() + 1);
-			//	m_objectList[i]->SetMyLastBulletTime(0.f);
-			//	m_objectList[i]->SetMyFriend(i);
-			//}
-		}
-
-	}//==========================================================
-	
-	 //0.5초마다 에로우 
-	for (int i = 0; i < m_objectCnt; ++i)
-	{
-		if (m_objectList[i] != NULL)
-		{
-			//DWORD CurrentTime = timeGetTime();
-			//if (CurrentTime - m_objectList[i]->GetObjectTimer() >= 5000.f  && m_objectList[i]->GetObjectType() == OBJECT_CHARACTER)
-			//{
-			//	tmpFriendNum = AddObjectList(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(), OBJECT_ARROW, m_objectList[i]->GetMyTEAM()); //\dhfb
-			//	SetObjCnt(GetObjCnt() + 1);
-			//	m_objectList[i]->SetTimer(timeGetTime());
-			//	m_objectList[i]->SetMyFriend(tmpFriendNum);
-			//}
-		}
-
-	}
-
-	//빌딩 블렛 빨간 총알도 추가
-
-	for (int i = 0; i < m_objectCnt; ++i)
-	{
-		if (m_objectList[i] != NULL)
-		{
-			
-		}
-
-	}
-	//=======================================================
-
-
-
-
 	for (int i = 0; i< m_objectCnt; ++i)
 	{
 		//포지션 업데이트 루프 
 		if (m_objectList[i] != NULL)
 		{
 			
+
 			if (m_objectList[i]->GetLife() < 0.0001f || m_objectList[i]->GetLifeTime() <0.0001f)
 			{
 
 				delete m_objectList[i];
 				m_objectList[i] = NULL;
+			}
+			else if ((SIZEWINDOWWIDTH/2) <m_objectList[i]->GetPositionX() || m_objectList[i]->GetPositionX()<-(SIZEWINDOWWIDTH / 2) ||
+				(SIZEWINDOWHEIGHT / 2) <m_objectList[i]->GetPositionY() || m_objectList[i]->GetPositionY() <-(SIZEWINDOWHEIGHT / 2)
+				) //여기 범위 윈도우 범위로 바꾸기 
+			{
+				if (m_objectList[i]->GetObjectType() == OBJECT_BULLET || m_objectList[i]->GetObjectType() == OBJECT_ARROW)
+				{
+					//범위 밖에 나가면 총알 없애기 
+					delete m_objectList[i];
+					m_objectList[i] = NULL;
+				}
+				else
+					m_objectList[i]->PositionUpdate(xvector, yvector, time);
+				
 			}
 			else
 			{
@@ -109,14 +67,14 @@ void SceneMgr::Update(float xvector, float yvector, DWORD time)
 					m_objectList[i]->SetMyFriend(i);
 				}
 				//빌딩총알 
-				if (m_objectList[i]->GetBulletTime() >0.05f && m_objectList[i]->GetObjectType() == OBJECT_BULDING)
+				if (m_objectList[i]->GetBulletTime() >0.02f && m_objectList[i]->GetObjectType() == OBJECT_BULDING)
 				{
 					AddObjectList(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(), OBJECT_BULLET, m_objectList[i]->GetMyTEAM()); //\dhfb
 					SetObjCnt(GetObjCnt() + 1);
 					m_objectList[i]->SetMyLastBulletTime(0.f);
 					m_objectList[i]->SetMyFriend(i);
 				}
-				if (m_objectList[i]->GetCharacterTime() > 0.05f  && m_objectList[i]->GetObjectType() == OBJECT_BULDING && m_objectList[i]->GetMyTEAM() == ATEAM)
+				if (m_objectList[i]->GetCharacterTime() > 0.02f  && m_objectList[i]->GetObjectType() == OBJECT_BULDING && m_objectList[i]->GetMyTEAM() == ATEAM)
 				{
 					AddObjectList(m_objectList[i]->GetPositionX() + ((float)std::rand() / (float)RAND_MAX), m_objectList[i]->GetPositionY(), OBJECT_CHARACTER, m_objectList[i]->GetMyTEAM()); //\dhfb
 					SetObjCnt(GetObjCnt() + 1);
@@ -127,13 +85,7 @@ void SceneMgr::Update(float xvector, float yvector, DWORD time)
 				m_objectList[i]->PositionUpdate(xvector, yvector, time);
 
 			}
-			 //시간추가 코드 
-			//if (m_objectList[i]->GetObjectTimer() - timeGetTime() >= 5000.0f  && m_objectList[i]->GetObjectType()== OBJECT_CHARACTER)
-			//{
-			//	AddObjectList(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(), OBJECT_BULLET); //\dhfb
-			//	SetObjCnt(GetObjCnt() + 1);
-			//	m_objectList[i]->SetTimer(0.0f);
-			//}
+		
 			
 		}
 	}
@@ -186,7 +138,7 @@ bool SceneMgr::CollisionCheck(Object *a, Object *b)
 }
 void SceneMgr::Render()
 {
-	
+	float testinglevel = 0.0f;
 	for (int i = 0; i < m_objectCnt; ++i)
 	{
 		if (m_objectList[i] != NULL)
@@ -196,28 +148,54 @@ void SceneMgr::Render()
 				
 				m_Renderer->DrawTexturedRect(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(),
 					m_objectList[i]->GetPositionZ(), m_objectList[i]->GetSize(), m_objectList[i]->GetR(),
-					m_objectList[i]->GetG(), m_objectList[i]->GetB(), m_objectList[i]->GetA(),m_texCharacter);
+					m_objectList[i]->GetG(), m_objectList[i]->GetB(), m_objectList[i]->GetA(),m_texCharacter, m_objectList[i]->m_RenderLevel);
+
+				//레드게이지
+				m_Renderer->DrawSolidRectGauge(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY()+30,
+					m_objectList[i]->GetPositionZ(), 50,10, 1,
+					0, 0, m_objectList[i]->GetA(),m_objectList[i]->GetLife()/ MaxLife_BUILDING,RenderLevel_GOD);
+
 			}
 			else if (m_objectList[i]->GetObjectType() == OBJECT_BULDING && m_objectList[i]->GetMyTEAM() == BTEAM)
 			{
 
 				m_Renderer->DrawTexturedRect(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(),
 					m_objectList[i]->GetPositionZ(), m_objectList[i]->GetSize(), m_objectList[i]->GetR(),
-					m_objectList[i]->GetG(), m_objectList[i]->GetB(), m_objectList[i]->GetA(), m_airCharacter);
+					m_objectList[i]->GetG(), m_objectList[i]->GetB(), m_objectList[i]->GetA(), m_airCharacter, m_objectList[i]->m_RenderLevel);
+				//블루게이지
+				m_Renderer->DrawSolidRectGauge(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY() + 30,
+					m_objectList[i]->GetPositionZ(), 50, 10, 0,
+					0, 1, m_objectList[i]->GetA(), m_objectList[i]->GetLife() / MaxLife_BUILDING, RenderLevel_GOD);
 			}
-			else if (m_objectList[i]->GetObjectType() == OBJECT_CHARACTER)
+			else if (m_objectList[i]->GetObjectType() == OBJECT_CHARACTER&& m_objectList[i]->GetMyTEAM() == ATEAM)
 			{
 
 				m_Renderer->DrawSolidRect(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(),
 					m_objectList[i]->GetPositionZ(), m_objectList[i]->GetSize(), m_objectList[i]->GetR(),
-					m_objectList[i]->GetG(), m_objectList[i]->GetB(), m_objectList[i]->GetA());
+					m_objectList[i]->GetG(), m_objectList[i]->GetB(), m_objectList[i]->GetA(), m_objectList[i]->m_RenderLevel);
+				//레드게이지
+				m_Renderer->DrawSolidRectGauge(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY() + 20,
+					m_objectList[i]->GetPositionZ(), 50, 10, 1,
+					0, 0, m_objectList[i]->GetA(), m_objectList[i]->GetLife() / MaxLife_CHARACTER, RenderLevel_GOD);
+			}
+			else if (m_objectList[i]->GetObjectType() == OBJECT_CHARACTER&& m_objectList[i]->GetMyTEAM() == BTEAM)
+			{
+
+				m_Renderer->DrawSolidRect(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(),
+					m_objectList[i]->GetPositionZ(), m_objectList[i]->GetSize(), m_objectList[i]->GetR(),
+					m_objectList[i]->GetG(), m_objectList[i]->GetB(), m_objectList[i]->GetA(), m_objectList[i]->m_RenderLevel);
+				//레드게이지
+				m_Renderer->DrawSolidRectGauge(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY() + 20,
+					m_objectList[i]->GetPositionZ(), 50, 10, 0,
+					0, 1, m_objectList[i]->GetA(), m_objectList[i]->GetLife() / MaxLife_CHARACTER, RenderLevel_GOD);
 			}
 
 			else
 			{
 				m_Renderer->DrawSolidRect(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(),
 					m_objectList[i]->GetPositionZ(), m_objectList[i]->GetSize(), m_objectList[i]->GetR(),
-					m_objectList[i]->GetG(), m_objectList[i]->GetB(), m_objectList[i]->GetA());
+					m_objectList[i]->GetG(), m_objectList[i]->GetB(), m_objectList[i]->GetA(), m_objectList[i]->m_RenderLevel);
+				
 			}
 		}
 	}
@@ -237,25 +215,17 @@ void SceneMgr::CollisionCheckList()
 
 				if (m_objectList[j] != NULL)
 				{
-					/*if (m_objectList[i]->GetObjectType() == OBJECT_BULDING && m_objectList[j]->GetObjectType() == OBJECT_BULLET)
-					{
-
-					}*/
-					/*else
-					{
-						m_objectList[i]->SetRGBA(1, 0, 0, 1);
-					}*/
 					
 					if (CollisionCheck(m_objectList[i],m_objectList[j]))
 					{
 						collisionCount++;
 						
-
+						//캐릭터와 불릿
 						if (m_objectList[i]->GetObjectType() == OBJECT_CHARACTER && m_objectList[j]->GetObjectType() == OBJECT_BULLET)
 						{
 							if (m_objectList[j]->GetMyTEAM() == m_objectList[i]->GetMyTEAM())
 							{
-								//cout << "";
+								
 							}
 							else
 							{
@@ -263,12 +233,27 @@ void SceneMgr::CollisionCheckList()
 								m_objectList[j]->SetLife(0.0f);
 							}
 						}
+						//불릿과 빌딩
+						if (m_objectList[i]->GetObjectType() == OBJECT_BULDING && m_objectList[j]->GetObjectType() == OBJECT_BULLET)
+						{
+							if (m_objectList[j]->GetMyTEAM() == m_objectList[i]->GetMyTEAM())
+							{
+
+							}
+							else
+							{
+								m_objectList[i]->SetLife(m_objectList[i]->GetLife() - m_objectList[j]->GetLife());
+								m_objectList[j]->SetLife(0.0f);
+							}
+						}
+
+
 						//에로우와 캐릭터
 						if(m_objectList[i]->GetObjectType() == OBJECT_CHARACTER && m_objectList[j]->GetObjectType() == OBJECT_ARROW )
 						{
 							if (m_objectList[j]->GetMyTEAM() == m_objectList[i]->GetMyTEAM())
 							{
-								//cout << "";
+								
 							}
 							else
 							{
@@ -278,26 +263,26 @@ void SceneMgr::CollisionCheckList()
 
 						}
 						//에로우와 빌딩   나중에 요거 조건 묶어서 함수로 빼고 싶다 ..;;;
-						//if (m_objectList[i]->GetObjectType() == OBJECT_BULDING && m_objectList[j]->GetObjectType() == OBJECT_ARROW)
-						//{
-						//	if (m_objectList[j]->GetMyTEAM() == m_objectList[i]->GetMyTEAM())
-						//	{
-						//		//cout << "";
-						//	}
-						//	else
-						//	{
-						//		m_objectList[i]->SetLife(m_objectList[i]->GetLife() - m_objectList[j]->GetLife());
-						//		m_objectList[j]->SetLife(0.0f);
-						//	}
+						if (m_objectList[i]->GetObjectType() == OBJECT_BULDING && m_objectList[j]->GetObjectType() == OBJECT_ARROW)
+						{
+							if (m_objectList[j]->GetMyTEAM() == m_objectList[i]->GetMyTEAM())
+							{
+								//cout << "";
+							}
+							else
+							{
+								m_objectList[i]->SetLife(m_objectList[i]->GetLife() - m_objectList[j]->GetLife());
+								m_objectList[j]->SetLife(0.0f);
+							}
 
-						//}
+						}
 
 						//빌딩과캐릭터
 						if (m_objectList[i]->GetObjectType() == OBJECT_BULDING && m_objectList[j]->GetObjectType() == OBJECT_CHARACTER)
 						{
 							if (m_objectList[j]->GetMyTEAM() == m_objectList[i]->GetMyTEAM())
 							{
-								//cout << "";
+
 							}
 							else
 							{
@@ -318,13 +303,6 @@ void SceneMgr::CollisionCheckList()
 					
 					
 				}
-			}
-
-			if (collisionCount > 0)
-			{
-			
-				//m_objectList[i]->SetRGBA(1, 0, 0, 1);
-		
 			}
 			
 		}

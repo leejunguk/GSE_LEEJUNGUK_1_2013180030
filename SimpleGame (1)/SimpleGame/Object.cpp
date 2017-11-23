@@ -23,22 +23,23 @@ Object::Object(float x, float y,int objecttype)
 		m_x = 0, m_y = 0;
 		m_Life = 500.f;
 		m_Speed = 0.f;
-		m_size = 50.f;
+		m_size = 100.f;
 		m_r = 1;
 		m_g = 1;
 		m_b = 0;
 		m_a = 1;
 		SetRGBA(1,1,0,1);
 		m_LifeTime = 100000.f;
+		m_RenderLevel = RenderLevel_BULDING;
 		return;
 	}
 	else if (objecttype == OBJECT_CHARACTER)
 	{
 		m_type = OBJECT_CHARACTER;
 		
-		m_Life = 10.f;
+		m_Life = 100.f;
 		m_Speed = 300.f;
-		m_size = 40.f;
+		m_size = 30.f;
 		m_r = 1.f;
 		m_g = 1.f;
 		m_b = 1;
@@ -47,15 +48,16 @@ Object::Object(float x, float y,int objecttype)
 		m_x = x, m_y = y;
 		m_Vx = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
 		m_Vy = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
+		m_RenderLevel = RenderLevel_CHARACTER;
 		return;
 	}
 	else if (objecttype == OBJECT_BULLET)
 	{
 		m_type = OBJECT_BULLET;
 	
-		m_Life = 20.f;
-		m_Speed = 300.f;
-		m_size = 2.f;
+		m_Life = 15.f;
+		m_Speed = 600.f;
+		m_size = 4.f;
 		m_r = 1.f;
 		m_g = 0;
 		m_b = 0;
@@ -64,15 +66,16 @@ Object::Object(float x, float y,int objecttype)
 		m_x = x, m_y = y;
 		m_Vx = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
 		m_Vy = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
+		m_RenderLevel = RenderLevel_BULLET;
 		return;
 	}
 	else if (objecttype == OBJECT_ARROW)
 	{
 		m_type = OBJECT_ARROW;
 
-		m_Life = 20.f;
-		m_Speed = 300.f;
-		m_size = 2.f;
+		m_Life = 10.f;
+		m_Speed = 100.f;
+		m_size = 4.f;
 		m_r = 0;
 		m_g = 1.f;
 		m_b = 0;
@@ -81,6 +84,7 @@ Object::Object(float x, float y,int objecttype)
 		m_x = x, m_y = y;
 		m_Vx = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
 		m_Vy = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
+		m_RenderLevel = RenderLevel_ARROW;
 		return;
 	}
 	
@@ -103,7 +107,7 @@ Object::Object(float x, float y, int objecttype,int TeamNumber)
 		m_x = x, m_y = y;
 		m_Life = 500.f;
 		m_Speed = 0.f;
-		m_size = 50.f;
+		m_size = 100.f;
 		m_r = 1;
 		m_g = 1;
 		m_b = 0;
@@ -111,6 +115,7 @@ Object::Object(float x, float y, int objecttype,int TeamNumber)
 		SetRGBA(1, 1, 0, 1);
 		m_LifeTime = 100000.f;
 		m_TeamNumber = ATEAM;
+		m_RenderLevel = RenderLevel_BULDING;
 		return;
 	}
 	else if (objecttype == OBJECT_BULDING && TeamNumber == BTEAM)
@@ -119,7 +124,7 @@ Object::Object(float x, float y, int objecttype,int TeamNumber)
 		m_x = x, m_y = y;
 		m_Life = 500.f;
 		m_Speed = 0.f;
-		m_size = 50.f;
+		m_size = 100.f;
 		m_r = 1;
 		m_g = 1;
 		m_b = 0;
@@ -127,15 +132,16 @@ Object::Object(float x, float y, int objecttype,int TeamNumber)
 		SetRGBA(1, 1, 0, 1);
 		m_LifeTime = 100000.f;
 		m_TeamNumber = BTEAM;
+		m_RenderLevel = RenderLevel_BULDING;
 		return;
 	}
 	else if (objecttype == OBJECT_CHARACTER && TeamNumber == ATEAM)
 	{
 		m_type = OBJECT_CHARACTER;
 
-		m_Life = 10.f;
+		m_Life = 100.f;
 		m_Speed = 300.f;
-		m_size = 10.f;
+		m_size = 30.f;
 		m_r = 1.f;
 		m_g = 0.f;
 		m_b = 0;
@@ -145,15 +151,16 @@ Object::Object(float x, float y, int objecttype,int TeamNumber)
 		m_Vx = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
 		m_Vy = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
 		m_TeamNumber = ATEAM;
+		m_RenderLevel = RenderLevel_CHARACTER;
 		return;
 	}
 	else if (objecttype == OBJECT_CHARACTER && TeamNumber == BTEAM)
 	{
 		m_type = OBJECT_CHARACTER;
 
-		m_Life = 10.f;
+		m_Life = 100.f;
 		m_Speed = 300.f;
-		m_size = 10.f;
+		m_size = 30.f;
 		m_r = 0.f;
 		m_g = 0.f;
 		m_b = 1;
@@ -163,15 +170,16 @@ Object::Object(float x, float y, int objecttype,int TeamNumber)
 		m_Vx = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
 		m_Vy = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
 		m_TeamNumber = BTEAM;
+		m_RenderLevel = RenderLevel_CHARACTER;
 		return;
 	}
 	else if (objecttype == OBJECT_BULLET && TeamNumber == ATEAM)
 	{
 		m_type = OBJECT_BULLET;
 
-		m_Life = 20.f;
+		m_Life = 15.f;
 		m_Speed = 600.f;
-		m_size = 2.f;
+		m_size = 4.f;
 		m_r = 1.f;
 		m_g = 0;
 		m_b = 0;
@@ -180,6 +188,7 @@ Object::Object(float x, float y, int objecttype,int TeamNumber)
 		m_x = x, m_y = y;
 		m_Vx = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
 		m_Vy = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
+		m_RenderLevel = RenderLevel_BULLET;
 		m_TeamNumber = ATEAM;
 		return;
 	}
@@ -187,9 +196,9 @@ Object::Object(float x, float y, int objecttype,int TeamNumber)
 	{
 		m_type = OBJECT_BULLET;
 
-		m_Life = 20.f;
+		m_Life = 15.f;
 		m_Speed = 600.f;
-		m_size = 2.f;
+		m_size = 4.f;
 		m_r = 0.f;
 		m_g = 0;
 		m_b = 1;
@@ -199,6 +208,7 @@ Object::Object(float x, float y, int objecttype,int TeamNumber)
 		m_Vx = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
 		m_Vy = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
 		m_TeamNumber = BTEAM;
+		m_RenderLevel = RenderLevel_BULLET;
 		return;
 	}
 	else if (objecttype == OBJECT_ARROW&& TeamNumber == ATEAM)
@@ -207,7 +217,7 @@ Object::Object(float x, float y, int objecttype,int TeamNumber)
 
 		m_Life = 10.f;
 		m_Speed = 100.f;
-		m_size = 2.f;
+		m_size = 4.f;
 		m_r = 0.5f;
 		m_g = 0.2f;
 		m_b = 0.7;
@@ -217,6 +227,7 @@ Object::Object(float x, float y, int objecttype,int TeamNumber)
 		m_Vx = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
 		m_Vy = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
 		m_TeamNumber = ATEAM;
+		m_RenderLevel = RenderLevel_ARROW;
 		return;
 	}
 	else if (objecttype == OBJECT_ARROW&& TeamNumber == BTEAM)
@@ -225,7 +236,7 @@ Object::Object(float x, float y, int objecttype,int TeamNumber)
 
 		m_Life = 10.f;
 		m_Speed = 100.f;
-		m_size = 2.f;
+		m_size = 4.f;
 		m_r = 1.0f;
 		m_g = 1.0f;
 		m_b = 0.0;
@@ -235,6 +246,7 @@ Object::Object(float x, float y, int objecttype,int TeamNumber)
 		m_Vx = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
 		m_Vy = 50.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
 		m_TeamNumber = BTEAM;
+		m_RenderLevel = RenderLevel_ARROW;
 		return;
 	}
 

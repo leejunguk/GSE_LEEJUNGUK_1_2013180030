@@ -60,5 +60,7 @@ private:
 	float m_bulletLastTime;
 	float m_ArrowLastTime;
 	float m_ChracterLastTime;
+public:
+	float m_RenderLevel;
 };
 
