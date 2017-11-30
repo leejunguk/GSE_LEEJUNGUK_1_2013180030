@@ -10,6 +10,7 @@ Object::Object()
 	m_bulletLastTime = 0.f;
 	m_ArrowLastTime = 0.f;
 	m_ChracterLastTime = 0.f;
+	m_AnimationFrame = 0;
 }
 Object::Object(float x, float y,int objecttype)
 {
@@ -17,6 +18,7 @@ Object::Object(float x, float y,int objecttype)
 	m_ArrowLastTime = 0.f;
 	m_objectTimer = 0.00000f;
 	m_ChracterLastTime = 0.f;
+	m_AnimationFrame = 0;
 	if (objecttype == OBJECT_BULDING)
 	{
 		m_type = OBJECT_BULDING;
@@ -101,6 +103,7 @@ Object::Object(float x, float y, int objecttype,int TeamNumber)
 	m_bulletLastTime = 0.f;
 	m_ArrowLastTime = 0.f;
 	m_ChracterLastTime = 0.f;
+	m_AnimationFrame = 0;
 	if (objecttype == OBJECT_BULDING && TeamNumber == ATEAM)
 	{
 		m_type = OBJECT_BULDING;
@@ -264,12 +267,30 @@ Object::~Object()
 void Object::PositionUpdate(float xvector, float yvector, DWORD time)
 {
 	float elapsetime = (float)time * 0.00001f;
+	static int framecnt = 0; 
 
 	m_bulletLastTime += elapsetime;
 	m_ArrowLastTime += elapsetime;
 	m_ChracterLastTime += elapsetime;
+	m_AnimationTime += elapsetime;
+	m_BulletAnimationTime += elapsetime *10.f;
+
+
+	/*if (100.f < m_BulletAnimationTime)
+		m_BulletAnimationTime = 0;*/
+
 	m_x = m_x + m_Vx *(xvector * elapsetime) * m_Speed;
 	m_y = m_y + m_Vy *(yvector * elapsetime) * m_Speed;
+
+	if (16 < m_AnimationFrame)
+		m_AnimationFrame = 1;
+	if (0.0015f < m_AnimationTime)
+	{
+		m_AnimationFrame++;
+		m_AnimationTime = 0.f;
+	}
+	//framecnt++;
+
 	//m_size = 20 * sin(m_x);
 	//m_size = 20;
 	if ( m_x > SIZEWINDOWWIDTH /2)

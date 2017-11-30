@@ -183,7 +183,9 @@ int main(int argc, char **argv)
 
 	g_ScenMgr->m_texCharacter = g_Renderer->CreatePngTexture("Texture/bunker.png");
 	g_ScenMgr->m_airCharacter = g_Renderer->CreatePngTexture("Texture/Building.png");
-
+	g_ScenMgr->m_BakcGround = g_Renderer->CreatePngTexture("Texture/Background.png");
+	g_ScenMgr->m_CharaterAnimation = g_Renderer->CreatePngTexture("Texture/Rockman.png");
+	g_ScenMgr->m_Paticle = g_Renderer->CreatePngTexture("Texture/Particle.png");
 	//√ ±‚»≠
 
 	glutDisplayFunc(RenderScene);

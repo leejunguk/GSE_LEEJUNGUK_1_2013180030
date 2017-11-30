@@ -139,6 +139,14 @@ bool SceneMgr::CollisionCheck(Object *a, Object *b)
 void SceneMgr::Render()
 {
 	float testinglevel = 0.0f;
+	static float animationFrame = 0;
+
+	//if (16 < animationFrame)
+		//animationFrame = 0;
+
+	
+	m_Renderer->DrawTexturedRect(0, 0, 0, 800, 0.5, 0.5, 0.5, 1, m_BakcGround, RenderLevel_BACKGROUND);
+
 	for (int i = 0; i < m_objectCnt; ++i)
 	{
 		if (m_objectList[i] != NULL)
@@ -170,9 +178,15 @@ void SceneMgr::Render()
 			else if (m_objectList[i]->GetObjectType() == OBJECT_CHARACTER&& m_objectList[i]->GetMyTEAM() == ATEAM)
 			{
 
-				m_Renderer->DrawSolidRect(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(),
+				/*m_Renderer->DrawSolidRect(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(),
 					m_objectList[i]->GetPositionZ(), m_objectList[i]->GetSize(), m_objectList[i]->GetR(),
-					m_objectList[i]->GetG(), m_objectList[i]->GetB(), m_objectList[i]->GetA(), m_objectList[i]->m_RenderLevel);
+					m_objectList[i]->GetG(), m_objectList[i]->GetB(), m_objectList[i]->GetA(), m_objectList[i]->m_RenderLevel);*/
+
+				//에니메이션 추가
+				m_Renderer->DrawTexturedRectSeq(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(),
+					m_objectList[i]->GetPositionZ(), m_objectList[i]->GetSize(), m_objectList[i]->GetR(),
+					m_objectList[i]->GetG(), m_objectList[i]->GetB(), m_objectList[i]->GetA(),m_CharaterAnimation, m_objectList[i]->m_AnimationFrame,0,16,1, m_objectList[i]->m_RenderLevel);
+
 				//레드게이지
 				m_Renderer->DrawSolidRectGauge(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY() + 20,
 					m_objectList[i]->GetPositionZ(), 50, 10, 1,
@@ -189,9 +203,17 @@ void SceneMgr::Render()
 					m_objectList[i]->GetPositionZ(), 50, 10, 0,
 					0, 1, m_objectList[i]->GetA(), m_objectList[i]->GetLife() / MaxLife_CHARACTER, RenderLevel_GOD);
 			}
-
+		
 			else
 			{
+				if (m_objectList[i]->GetObjectType() == OBJECT_BULLET) //////////////////////paticle
+				{
+					m_Renderer->DrawParticle(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(),
+						m_objectList[i]->GetPositionZ(), m_objectList[i]->GetSize(), m_objectList[i]->GetR(),
+						m_objectList[i]->GetG(), m_objectList[i]->GetB(), m_objectList[i]->GetA(), -m_objectList[i]->m_Vx, -m_objectList[i]->m_Vy, m_Paticle, m_objectList[i]->m_BulletAnimationTime);
+
+				}
+
 				m_Renderer->DrawSolidRect(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(),
 					m_objectList[i]->GetPositionZ(), m_objectList[i]->GetSize(), m_objectList[i]->GetR(),
 					m_objectList[i]->GetG(), m_objectList[i]->GetB(), m_objectList[i]->GetA(), m_objectList[i]->m_RenderLevel);
@@ -199,6 +221,9 @@ void SceneMgr::Render()
 			}
 		}
 	}
+
+	
+
 }
 void SceneMgr::CollisionCheckList()
 {

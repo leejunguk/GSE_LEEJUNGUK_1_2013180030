@@ -46,8 +46,7 @@ private:
 	float m_g;
 	float m_b;
 	float m_a;
-	float m_Vx;
-	float m_Vy;
+
 	float m_Speed;
 	char*  m_name;
 	float m_Life;
@@ -60,7 +59,12 @@ private:
 	float m_bulletLastTime;
 	float m_ArrowLastTime;
 	float m_ChracterLastTime;
+	float m_AnimationTime;
 public:
 	float m_RenderLevel;
+	int   m_AnimationFrame;  //max 16
+	float m_BulletAnimationTime;
+	float m_Vx;
+	float m_Vy;
 };
 

@@ -18,12 +18,14 @@ const int OBJECT_BULDING = 1;
 const int OBJECT_CHARACTER = 2;
 const int OBJECT_BULLET = 3;
 const int OBJECT_ARROW = 4;
+const int OBJECT_BACKGROUND = 5;
 
 const int SIZEWINDOWWIDTH = 500;
 const int SIZEWINDOWHEIGHT = 800;
 
 const int ATEAM = 1;
 const int BTEAM = 2;
+
 
 const float RenderLevel_GOD = 0.f;
 const float RenderLevel_SKY = 0.1f;
@@ -34,6 +36,7 @@ const float RenderLevel_BULDING = 0.1f;
 const float RenderLevel_CHARACTER = 0.2f;
 const float RenderLevel_BULLET = 0.3f;
 const float RenderLevel_ARROW = 0.3f;
+const float RenderLevel_BACKGROUND = 0.9f;
 
 const float MaxLife_CHARACTER = 100.f;
 const float MaxLife_BUILDING = 500.f;
