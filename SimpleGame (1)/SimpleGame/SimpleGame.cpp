@@ -17,7 +17,7 @@ but WITHOUT ANY WARRANTY.
 #include "Object.h"
 #include "SceneMgr.h"
 //
-
+#include "Sound.h"
 #include "Renderer.h"
 
 Renderer *g_Renderer;
@@ -152,6 +152,15 @@ int main(int argc, char **argv)
 		std::cout << "Renderer could not be initialized.. \n";
 	}*/
 
+	//사운드 생성 
+	Sound* m_sound = new Sound();
+
+	int soundBG = m_sound->CreateSound("./Dependencies/SoundSamples/ShapeOfYou.mp3");
+
+	m_sound->PlaySound(soundBG, true, 0.2f);
+
+
+
 	//ATEAM 왼쪽 상단건물
 	g_ScenMgr->AddObjectList(-200, 300, OBJECT_BULDING,ATEAM); //\dhfb
 	g_ScenMgr->SetObjCnt(g_ScenMgr->GetObjCnt() + 1);
@@ -178,8 +187,7 @@ int main(int argc, char **argv)
 	//BTEAM 오른쪽 하단 건물
 	g_ScenMgr->AddObjectList(200, -300, OBJECT_BULDING, BTEAM); //\dhfb
 	g_ScenMgr->SetObjCnt(g_ScenMgr->GetObjCnt() + 1);
-
-
+	
 
 	g_ScenMgr->m_texCharacter = g_Renderer->CreatePngTexture("Texture/bunker.png");
 	g_ScenMgr->m_airCharacter = g_Renderer->CreatePngTexture("Texture/Building.png");
@@ -187,6 +195,11 @@ int main(int argc, char **argv)
 	g_ScenMgr->m_CharaterAnimation = g_Renderer->CreatePngTexture("Texture/Rockman.png");
 	g_ScenMgr->m_Paticle = g_Renderer->CreatePngTexture("Texture/Particle.png");
 	//초기화
+
+
+	//Text 추가 
+	//g_Renderer->DrawTextW
+	
 
 	glutDisplayFunc(RenderScene);
 	glutIdleFunc(Idle);

@@ -28,6 +28,8 @@ void SceneMgr::Update(float xvector, float yvector, DWORD time)
 	timer += float(time);
 	int tmpFriendNum = 0;
 	
+	
+
 	for (int i = 0; i< m_objectCnt; ++i)
 	{
 		//포지션 업데이트 루프 
@@ -143,7 +145,7 @@ void SceneMgr::Render()
 
 	//if (16 < animationFrame)
 		//animationFrame = 0;
-
+	
 	
 	m_Renderer->DrawTexturedRect(0, 0, 0, 800, 0.5, 0.5, 0.5, 1, m_BakcGround, RenderLevel_BACKGROUND);
 
@@ -202,6 +204,8 @@ void SceneMgr::Render()
 				m_Renderer->DrawSolidRectGauge(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY() + 20,
 					m_objectList[i]->GetPositionZ(), 50, 10, 0,
 					0, 1, m_objectList[i]->GetA(), m_objectList[i]->GetLife() / MaxLife_CHARACTER, RenderLevel_GOD);
+
+				
 			}
 		
 			else
@@ -222,7 +226,7 @@ void SceneMgr::Render()
 		}
 	}
 
-	
+	m_Renderer->DrawText(-30, 0, GLUT_BITMAP_TIMES_ROMAN_24, 0.9f, 0.9f, 0.9f, "Stage 1");
 
 }
 void SceneMgr::CollisionCheckList()
@@ -269,6 +273,7 @@ void SceneMgr::CollisionCheckList()
 							{
 								m_objectList[i]->SetLife(m_objectList[i]->GetLife() - m_objectList[j]->GetLife());
 								m_objectList[j]->SetLife(0.0f);
+								
 							}
 						}
 
