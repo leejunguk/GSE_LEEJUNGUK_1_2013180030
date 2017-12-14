@@ -11,7 +11,15 @@ SceneMgr::SceneMgr()
 	{
 		std::cout << "Renderer could not be initialized.. \n";
 	}
-	
+	m_texCharacter = m_Renderer->CreatePngTexture("Texture/bunker.png");
+	m_airCharacter = m_Renderer->CreatePngTexture("Texture/Building.png");
+	m_BakcGround = m_Renderer->CreatePngTexture("Texture/Background.png");
+	m_CharaterAnimation = m_Renderer->CreatePngTexture("Texture/Rockman.png");
+	m_Paticle = m_Renderer->CreatePngTexture("Texture/Particle.png");
+	m_snow = m_Renderer->CreatePngTexture("Texture/snow.png");
+
+	m_Climate = new Object;
+	float m_ClimateAnimationTime = 0;
 }
 
 
@@ -28,6 +36,8 @@ void SceneMgr::Update(float xvector, float yvector, DWORD time)
 	timer += float(time);
 	int tmpFriendNum = 0;
 	
+	
+	m_Climate->PositionUpdate(1,1,time);
 	
 
 	for (int i = 0; i< m_objectCnt; ++i)
@@ -146,8 +156,15 @@ void SceneMgr::Render()
 	//if (16 < animationFrame)
 		//animationFrame = 0;
 	
+	static int framecnt = 0;
 	
+
+
 	m_Renderer->DrawTexturedRect(0, 0, 0, 800, 0.5, 0.5, 0.5, 1, m_BakcGround, RenderLevel_BACKGROUND);
+	//float elapsetime = (float)frametime * 0.00001f;
+
+	//m_ClimateAnimationTime += elapsetime *100.f;
+	m_Renderer->DrawParticleClimate(1, 1, 0, 1, 1, 1, 1, 0.9, 0.1, -0.1, m_snow, m_Climate->m_BulletAnimationTime, RenderLevel_SKY);
 
 	for (int i = 0; i < m_objectCnt; ++i)
 	{
@@ -213,8 +230,8 @@ void SceneMgr::Render()
 				if (m_objectList[i]->GetObjectType() == OBJECT_BULLET) //////////////////////paticle
 				{
 					m_Renderer->DrawParticle(m_objectList[i]->GetPositionX(), m_objectList[i]->GetPositionY(),
-						m_objectList[i]->GetPositionZ(), m_objectList[i]->GetSize(), m_objectList[i]->GetR(),
-						m_objectList[i]->GetG(), m_objectList[i]->GetB(), m_objectList[i]->GetA(), -m_objectList[i]->m_Vx, -m_objectList[i]->m_Vy, m_Paticle, m_objectList[i]->m_BulletAnimationTime);
+						m_objectList[i]->GetPositionZ(), m_objectList[i]->GetSize() *2.0f, m_objectList[i]->GetR(),
+						m_objectList[i]->GetG(), m_objectList[i]->GetB(), m_objectList[i]->GetA(), -0.1f*m_objectList[i]->m_Vx, -0.1f*m_objectList[i]->m_Vy, m_Paticle, m_objectList[i]->m_BulletAnimationTime,RenderLevel_PARTICLE);
 
 				}
 

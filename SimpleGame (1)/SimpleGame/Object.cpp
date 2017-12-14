@@ -11,6 +11,7 @@ Object::Object()
 	m_ArrowLastTime = 0.f;
 	m_ChracterLastTime = 0.f;
 	m_AnimationFrame = 0;
+	m_BulletAnimationTime = 0.f;
 }
 Object::Object(float x, float y,int objecttype)
 {
@@ -19,6 +20,7 @@ Object::Object(float x, float y,int objecttype)
 	m_objectTimer = 0.00000f;
 	m_ChracterLastTime = 0.f;
 	m_AnimationFrame = 0;
+	m_BulletAnimationTime = 0.f; 
 	if (objecttype == OBJECT_BULDING)
 	{
 		m_type = OBJECT_BULDING;
@@ -104,6 +106,7 @@ Object::Object(float x, float y, int objecttype,int TeamNumber)
 	m_ArrowLastTime = 0.f;
 	m_ChracterLastTime = 0.f;
 	m_AnimationFrame = 0;
+	m_BulletAnimationTime = 0.f;
 	if (objecttype == OBJECT_BULDING && TeamNumber == ATEAM)
 	{
 		m_type = OBJECT_BULDING;
@@ -273,7 +276,8 @@ void Object::PositionUpdate(float xvector, float yvector, DWORD time)
 	m_ArrowLastTime += elapsetime;
 	m_ChracterLastTime += elapsetime;
 	m_AnimationTime += elapsetime;
-	m_BulletAnimationTime += elapsetime *10.f;
+
+	m_BulletAnimationTime += elapsetime *30.f;
 
 
 	/*if (100.f < m_BulletAnimationTime)

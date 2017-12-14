@@ -146,11 +146,11 @@ int main(int argc, char **argv)
 
 	g_ScenMgr = new SceneMgr;
 	// Initialize Renderer
-	/*g_Renderer = new Renderer(500, 500);
+	g_Renderer = new Renderer(500, 500);
 	if (!g_Renderer->IsInitialized())
 	{
 		std::cout << "Renderer could not be initialized.. \n";
-	}*/
+	}
 
 	//사운드 생성 
 	Sound* m_sound = new Sound();
@@ -189,11 +189,7 @@ int main(int argc, char **argv)
 	g_ScenMgr->SetObjCnt(g_ScenMgr->GetObjCnt() + 1);
 	
 
-	g_ScenMgr->m_texCharacter = g_Renderer->CreatePngTexture("Texture/bunker.png");
-	g_ScenMgr->m_airCharacter = g_Renderer->CreatePngTexture("Texture/Building.png");
-	g_ScenMgr->m_BakcGround = g_Renderer->CreatePngTexture("Texture/Background.png");
-	g_ScenMgr->m_CharaterAnimation = g_Renderer->CreatePngTexture("Texture/Rockman.png");
-	g_ScenMgr->m_Paticle = g_Renderer->CreatePngTexture("Texture/Particle.png");
+
 	//초기화
 
 

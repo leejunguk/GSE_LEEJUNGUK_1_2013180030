@@ -11,7 +11,7 @@ public:
 	~SceneMgr();
 public:
 	Object* m_objectList[MAX_OBJECTS_COUNT];
-	
+	Object* m_Climate; // 날씨 시간카운트때매
 private:
 	int		m_objectCnt;
 	Renderer *m_Renderer;
@@ -30,6 +30,9 @@ public:
 	GLuint m_BakcGround;
 	GLuint m_CharaterAnimation;
 	GLuint m_Paticle;
+	GLuint m_snow;
+
+	float m_ClimateAnimationTime;
 public:
 	inline void SetObjCnt(int cnt) { m_objectCnt = cnt; };
 	inline int GetObjCnt() { return m_objectCnt; };

@@ -36,6 +36,7 @@ const float RenderLevel_BULDING = 0.1f;
 const float RenderLevel_CHARACTER = 0.2f;
 const float RenderLevel_BULLET = 0.3f;
 const float RenderLevel_ARROW = 0.3f;
+const float RenderLevel_PARTICLE = 0.3f;
 const float RenderLevel_BACKGROUND = 0.9f;
 
 const float MaxLife_CHARACTER = 100.f;
