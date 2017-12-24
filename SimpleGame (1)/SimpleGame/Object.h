@@ -1,4 +1,5 @@
 #pragma once
+#include "Sound.h"
 class Object
 {
 public:
@@ -60,11 +61,20 @@ private:
 	float m_ArrowLastTime;
 	float m_ChracterLastTime;
 	float m_AnimationTime;
+	
 public:
 	float m_RenderLevel;
 	int   m_AnimationFrame;  //max 16
 	float m_BulletAnimationTime;
+	float m_CommandAnimationTime;
+	float m_MutallsikAnimationTime;
+	float m_EffectAnimationTime;
 	float m_Vx;
 	float m_Vy;
+	Sound *m_effectSound;
+	int MarineBirth;
+	bool m_Birth;
+	bool m_BulletSound;
+	int m_State;
 };
 

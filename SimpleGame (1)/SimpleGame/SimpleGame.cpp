@@ -34,6 +34,10 @@ static float frame;
 static int objnum = 0;
 bool g_LButtonDown;
 
+int MarineBirth;
+Sound* m_effectSound;
+bool SoundStop;
+
 void RenderScene(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -99,17 +103,16 @@ void MouseInput(int button, int state, int x, int y)
 	{
 
 		//\dhfb
-		if (-400 <= (-y + SIZEWINDOWHEIGHT / 2) && (-y + SIZEWINDOWHEIGHT / 2) <= 0 &&BlueTeamTimer >0.07f)
+		if (-200 <= (-y + SIZEWINDOWHEIGHT / 2) && (-y + SIZEWINDOWHEIGHT / 2) <= 0 &&BlueTeamTimer >0.01f)
 		{
-			g_ScenMgr->AddObjectList(x - SIZEWINDOWWIDTH / 2, -y + SIZEWINDOWHEIGHT / 2, OBJECT_CHARACTER,BTEAM);
-			g_ScenMgr->SetObjCnt(g_ScenMgr->GetObjCnt() + 1);
-			BlueTeamTimer = 0.f;
 			
-		}
-		else
-		{
+				g_ScenMgr->AddObjectList(x - SIZEWINDOWWIDTH / 2, -y + SIZEWINDOWHEIGHT / 2, OBJECT_MARINE, BTEAM);
+				g_ScenMgr->SetObjCnt(g_ScenMgr->GetObjCnt() + 1);
+				BlueTeamTimer = 0.f;
+			
 
 		}
+		
 		g_LButtonDown = false;
 	}
 	
@@ -155,37 +158,40 @@ int main(int argc, char **argv)
 	//사운드 생성 
 	Sound* m_sound = new Sound();
 
-	int soundBG = m_sound->CreateSound("./Dependencies/SoundSamples/ShapeOfYou.mp3");
+	int soundBG = m_sound->CreateSound("./Dependencies/SoundSamples/StarCraft2.mp3");
 
 	m_sound->PlaySound(soundBG, true, 0.2f);
 
-
+	//사운드 생성 
+	//m_effectSound = new Sound();
+	//MarineBirth = m_effectSound->CreateSound("./Dependencies/SoundSamples/MarineReady.mp3");
+	//m_effectSound->PlaySound(MarineBirth, true, 0.01f);
 
 	//ATEAM 왼쪽 상단건물
-	g_ScenMgr->AddObjectList(-200, 300, OBJECT_BULDING,ATEAM); //\dhfb
+	g_ScenMgr->AddObjectList(-200, 300, OBJECT_SUBBUILDING,ATEAM); //\dhfb
 	g_ScenMgr->SetObjCnt(g_ScenMgr->GetObjCnt() + 1);
 	frame = 1;
-	//ATEAM 중앙 상단건물
+	//ATEAM 중앙 상단건물 //하이브 
 	g_ScenMgr->AddObjectList(0, 300, OBJECT_BULDING, ATEAM); //\dhfb
 	g_ScenMgr->SetObjCnt(g_ScenMgr->GetObjCnt() + 1);
 
 	//ATEAM 오른쪽 상단 건물
-	g_ScenMgr->AddObjectList(200, 300, OBJECT_BULDING, ATEAM); //\dhfb
+	g_ScenMgr->AddObjectList(200, 300, OBJECT_SUBBUILDING, ATEAM); //\dhfb
 	g_ScenMgr->SetObjCnt(g_ScenMgr->GetObjCnt() + 1);
 
 
 	//===================================================================BTEAM
 
 	//BTEAM 왼쪽 하단건물
-	g_ScenMgr->AddObjectList(-200, -300, OBJECT_BULDING, BTEAM); //\dhfb
+	g_ScenMgr->AddObjectList(-205, -95, OBJECT_SUBBUILDING, BTEAM); //\dhfb
 	g_ScenMgr->SetObjCnt(g_ScenMgr->GetObjCnt() + 1);
 	frame = 1;
-	//BTEAM 중앙 하단건물
-	g_ScenMgr->AddObjectList(0, -300, OBJECT_BULDING, BTEAM); //\dhfb
+	//BTEAM 중앙 하단건물 //커맨드 
+	g_ScenMgr->AddObjectList(0, -150, OBJECT_BULDING, BTEAM); //\dhfb
 	g_ScenMgr->SetObjCnt(g_ScenMgr->GetObjCnt() + 1);
 
 	//BTEAM 오른쪽 하단 건물
-	g_ScenMgr->AddObjectList(200, -300, OBJECT_BULDING, BTEAM); //\dhfb
+	g_ScenMgr->AddObjectList(205, -95, OBJECT_SUBBUILDING, BTEAM); //\dhfb
 	g_ScenMgr->SetObjCnt(g_ScenMgr->GetObjCnt() + 1);
 	
 
